@@ -279,11 +279,11 @@ function PostCard({ post, check, refreshPosts }) {
                                     to={`/profile/${el.username}`} 
                                     state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username }}
                                 >
-                                    <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                        <p className='comment_author'>{el.username}</p>
-                                        <p style={{ fontSize: '12px' }}>{timeFromNow(el.createdAt)}</p>
+                                    <div>
+                                        <p className='comment_author'>{el.username}</p>                                        
                                     </div>
                                 </Link>
+                                <p style={{ fontSize: '12px' }}>{timeFromNow(el.createdAt)}</p>
                                 <i 
                                     style={{ cursor: 'pointer', marginBottom: '10px' }} 
                                     onClick={() => toggleDropdown_2(el._id)}
@@ -330,7 +330,7 @@ function PostCard({ post, check, refreshPosts }) {
                                 >
                                     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                         <p className='comment_author'>{el.username}</p>
-                                        <p style={{ fontSize: '12px' }}>{timeFromNow(el.createdAt)}</p>
+                                        <p style={{ fontSize: '10px'}}>{timeFromNow(el.createdAt)}</p>
                                     </div>
                                 </Link>
                                 <i 

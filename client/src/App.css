@@ -86,8 +86,9 @@
       object-fit:none;
     }
     .logo{
-      width: 80px !important;
+      width: 120px !important;      
     }
+    
   }
   
   @media (max-width: 480px) {
@@ -96,9 +97,14 @@
       object-fit:none;
     }
     .logo{
-      width: 80px !important;
+      width: 150px !important;      
     }
-
+    .cont{
+      display: flex !important;
+      justify-content: center !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
   }
 
   .likesContainer{
@@ -173,11 +179,13 @@
 
 
 
-
+.conti{
+  padding: 20px;
+}
 
 .post-container {
   max-width: 600px;
-  margin: 20px auto;
+  margin: 20px auto;  
   padding: 20px;
   border: 1px solid #ddd;
   border-radius: 10px;
@@ -200,7 +208,7 @@
   border-radius: 5px;
   font-size: 16px;
   box-sizing: border-box;
-  transition: all 0.3s;
+  transition: all 0.3s;  
 }
 
 .post-input:focus,
@@ -857,4 +865,10 @@
 .load-more-button:disabled {
   background-color: #c0c0c0;
   cursor: not-allowed;
+}
+
+
+.comment_date{
+  width: 140px !important;
+  margin: 0 !important;
 }

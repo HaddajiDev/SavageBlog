@@ -125,7 +125,7 @@ function Profile() {
         `<label>Email<input type="email" id="email" class="swal2-input" placeholder="Email" value="${currentuser.email}"></label>` +
         `<label>Bio<input type="text" id="bio" class="swal2-input" placeholder="Bio" value="${currentuser.bio ?? ''}"></label>` +
         `<input type="password" id="currentPassword" class="swal2-input none" placeholder="Current Password">` +
-        `<label>New Password<input type="password" id="newPassword" class="swal2-input" placeholder="New Password"></label>` +
+        `<label>New Pass<input type="password" id="newPassword" class="swal2-input" placeholder="New Password"></label>` +
         `<label>Confirm<input type="password" id="confirmNewPassword" class="swal2-input" placeholder="Confirm Password"></label>`,
       showCancelButton: true,
       confirmButtonText: 'Save',
@@ -198,12 +198,12 @@ function Profile() {
           onChange={handleImageChange}
         />
         <div style={{ display: 'flex', gap: '10px' }}>
-          <h1>{currentuser?.username}</h1>
-          <button style={{ all: 'unset', cursor: 'pointer' }} onClick={handleEditProfile}>
+          <h1 className='mt-3'>{currentuser?.username}</h1>
+          <button className='mt-3' style={{ all: 'unset', cursor: 'pointer' }} onClick={handleEditProfile}>
             <i className="fa-solid fa-gear fa-2xl gear"></i>
           </button>
         </div>
-        {currentuser?.bio}
+        <p style={{textAlign: 'center', padding: '10px'}}>{currentuser?.bio}</p>
       </div>
 
       <div className="posts-list">

@@ -122,45 +122,48 @@ function PostAPost() {
   };
   
   return (
-    <div className="post-container">
-      <h1>Create Post</h1>
-      <input
-        type="text"
-        name="title"
-        placeholder="Title"
-        value={poster.title}
-        onChange={handleInputChange}
-        className="post-input"
-      />
-      <div className='counterLength'>
-        {TitleLength <= 50 ? <p>{TitleLength} / 50</p> : <p style={{color:'red'}}>{TitleLength} / 50</p>}
-      </div>     
-      
-      <textarea
-        name="body"
-        placeholder={`What's on your mind? ${user.username}`}
-        value={poster.body}
-        onChange={handleInputChange}
-        className="post-textarea"
-      ></textarea>
-      <div className='counterLength'>
-        {BodyLength <= 300 ? <p>{BodyLength} / 300</p> : <p style={{color:'red'}}>{BodyLength} / 300</p>}
+    <div className='conti'>
+      <div className="post-container">
+        <h1>Create Post</h1>
+        <input
+          type="text"
+          name="title"
+          placeholder="Title"
+          value={poster.title}
+          onChange={handleInputChange}
+          className="post-input"
+        />
+        <div className='counterLength'>
+          {TitleLength <= 50 ? <p>{TitleLength} / 50</p> : <p style={{color:'red'}}>{TitleLength} / 50</p>}
+        </div>     
+        
+        <textarea
+          name="body"
+          placeholder={`What's on your mind? ${user.username}`}
+          value={poster.body}
+          onChange={handleInputChange}
+          className="post-textarea"
+        ></textarea>
+        <div className='counterLength'>
+          {BodyLength <= 300 ? <p>{BodyLength} / 300</p> : <p style={{color:'red'}}>{BodyLength} / 300</p>}
+        </div>
+        
+        <div className="custom-file-input">
+          <label htmlFor="fileInput">Choose image</label>
+        </div>
+        <input
+          type="file"
+          id="fileInput"
+          onChange={handleImageChange}
+          className="post-file-input"
+        />
+        {image && <img src={URL.createObjectURL(image)} alt="Preview" className="post-image-preview" />}
+        <button onClick={handleImageUpload} className="post-button" disabled={isLoading}>
+          {isLoading ? <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-lg"></i> : 'Post'}
+        </button>
       </div>
-      
-      <div className="custom-file-input">
-        <label htmlFor="fileInput">Choose image</label>
-      </div>
-      <input
-        type="file"
-        id="fileInput"
-        onChange={handleImageChange}
-        className="post-file-input"
-      />
-      {image && <img src={URL.createObjectURL(image)} alt="Preview" className="post-image-preview" />}
-      <button onClick={handleImageUpload} className="post-button" disabled={isLoading}>
-        {isLoading ? <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-lg"></i> : 'Post'}
-      </button>
     </div>
+    
   );
 }
 function sleep(ms) {

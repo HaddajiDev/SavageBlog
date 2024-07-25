@@ -54,33 +54,11 @@ function Navbar() {
 
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light">
-            <div className="container">
-                <Link className="navbar-brand" to='/'><img src={logo} className='logo' alt='' style={{width: '150px'}}/></Link>
+            <div className="container cont">
+                <Link className="navbar-brand logocon" to='/'><img src={logo} className='logo' alt='' style={{width: '180px'}}/></Link>
                 {user ? (
-                    <>
-                        {/* <button
-                            className="navbar-toggler"
-                            type="button"
-                            data-bs-toggle="collapse"
-                            data-bs-target="#navbarSupportedContent"
-                            aria-controls="navbarSupportedContent"
-                            aria-expanded="false"
-                            aria-label="Toggle navigation"
-                        > */}
-                            {/* <span className="navbar-toggler-icon"></span> */}
-                        {/* </button> */}
-                        <div className="" id="navbarSupportedContent">
-                            {/* <form className="d-flex ms-auto">
-                                <input
-                                    className="form-control me-2"
-                                    type="search"
-                                    placeholder="Search"
-                                    aria-label="Search"
-                                />
-                                <button className="btn btn-outline-success" type="submit">
-                                    Search
-                                </button>
-                            </form> */}
+                    <>                        
+                        <div className="cont" id="navbarSupportedContent">                            
                             <ul className="navbar-nav ms-auto">
                                 <li className="nav-item">
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
@@ -104,7 +82,7 @@ function Navbar() {
                                                 </div>
                                             )}
                                         </div>
-                                        <div>
+                                        <div className='cont'>
                                             <Link className="nav-link" to='/profile' style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px' }}>
                                                 {user?.profileImageUrl ? (
                                                     <img src={user?.profileImageUrl} style={{ width: '35px', height: '35px', borderRadius: '50%' }} alt="profile" />

@@ -14,26 +14,28 @@ function Home() {
 
   return (
     <div>
-      {/* {posting ? <PostAPost /> : <><button onClick={() => setPosting(!posting)}>Post a post</button></>} */}
-      <div className='postingBG mt-3 mb-3'>
-        <div className='postBG'>
-          <div className='profileImageWrapper'>
-            {user.profileImageUrl ? (
-              <img src={user.profileImageUrl} className="pr_image" alt={`${user.username}'s profile`} />
-            ) : (
-              <img src={generateAvatarUrl(user.username)} className="pr_image" alt={`${user.username}'s avatar`} />
-            )}
-          </div>
-          <div className='inputWrapper'>
-            <input
-              readOnly
-              className='postInput'
-              placeholder={`What is on your mind, ${user.username}?`}
-              onClick={() => navigate('/post')}
-            />
+      <div className='conti'>
+        <div className='postingBG mt-3 mb-3'>
+          <div className='postBG'>
+            <div className='profileImageWrapper'>
+              {user.profileImageUrl ? (
+                <img src={user.profileImageUrl} className="pr_image" alt={`${user.username}'s profile`} />
+              ) : (
+                <img src={generateAvatarUrl(user.username)} className="pr_image" alt={`${user.username}'s avatar`} />
+              )}
+            </div>
+            <div className='inputWrapper'>
+              <input
+                readOnly
+                className='postInput'
+                placeholder={`What is on your mind, ${user.username}?`}
+                onClick={() => navigate('/post')}
+              />
+            </div>
           </div>
         </div>
       </div>
+      
 
       {/* <PostAPost /> */}
       <PostsList />
