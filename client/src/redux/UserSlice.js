@@ -102,7 +102,8 @@ export const DeleteUser = createAsyncThunk('user/delete', async(id) => {
 	} catch (error) {
 		console.log(error);
 	}
-})
+});
+
 
 const initialState = {
   	user: null,

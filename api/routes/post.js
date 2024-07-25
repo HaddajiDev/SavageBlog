@@ -216,10 +216,11 @@ router.get('/:postId/comments', async (req, res) => {
           postId: comment.post,
           authorId: author._id,
           body: comment.body,
+          bio: author.bio,
           username: author.username,
           profileImageUrl: author.profileImageUrl,
           createdAt: comment.createdAt,
-          _id: comment._id
+          _id: comment._id,          
         };
       } else {
         return {

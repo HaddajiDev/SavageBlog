@@ -5,6 +5,7 @@ import { AddComment } from '../redux/CommentSlice';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import CommentDropDown from './CommentDropDown';
+import { clearPosters } from '../redux/UserPostsSlice';
 
 function PostCard({ post, check, refreshPosts }) {
     const dispatch = useDispatch();
@@ -256,12 +257,13 @@ function PostCard({ post, check, refreshPosts }) {
             <div className="comments-section">
             {check === "check" ?
                 comments.length > 0 ? comments.slice(-2).reverse().map((el) => (
-                    <div className="comment" key={el._id}>
+                    <div className="comment" key={el._id}>                        
                         <div>
                             <Link 
                                 style={{ all: 'unset', cursor: 'pointer' }} 
                                 to={`/profile/${el.username}`} 
-                                state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username }}
+                                state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio }}
+                                onClick={() => dispatch(clearPosters())}
                             >
                                 {el.profileImageUrl ? (
                                     <img src={el.profileImageUrl} alt={el.username} />
@@ -276,6 +278,7 @@ function PostCard({ post, check, refreshPosts }) {
                                     style={{ all: 'unset', cursor: 'pointer', width: '50%' }} 
                                     to={`/profile/${el.username}`} 
                                     state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio }}
+                                    onClick={() => dispatch(clearPosters())}
                                 >
                                     <div>
                                         <p className='comment_author'>{el.username}</p>                                        
@@ -310,7 +313,8 @@ function PostCard({ post, check, refreshPosts }) {
                             <Link 
                                 style={{ all: 'unset', cursor: 'pointer' }} 
                                 to={`/profile/${el.username}`} 
-                                state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username }}
+                                state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio }}
+                                onClick={() => dispatch(clearPosters())}
                             >
                                 {el.profileImageUrl ? (
                                     <img src={el.profileImageUrl} alt={el.username} />
@@ -324,7 +328,8 @@ function PostCard({ post, check, refreshPosts }) {
                                 <Link 
                                     style={{ all: 'unset', cursor: 'pointer', width: '50%' }} 
                                     to={`/profile/${el.username}`} 
-                                    state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username }}
+                                    state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio }}
+                                    onClick={() => dispatch(clearPosters())}
                                 >
                                     <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
                                         <p className='comment_author'>{el.username}</p>

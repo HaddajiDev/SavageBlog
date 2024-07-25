@@ -5,6 +5,11 @@ import { clearPosters, GetUserPosts_2 } from '../redux/UserPostsSlice';
 import PostCard from './PostCard';
 
 function UserPage() {
+
+  useEffect(() => {
+    dispatch(clearPosters());
+  }, []);
+  
   const location = useLocation();
   const { state } = location;
   const dispatch = useDispatch();
@@ -13,8 +18,7 @@ function UserPage() {
 
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
-
+  const [hasMore, setHasMore] = useState(true);  
 
   useEffect(() => {
     if (state && state._id) {
@@ -52,8 +56,10 @@ function UserPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    dispatch(clearPosters());
+    
   }, []);
+
+  
 
   return (
     <div className="user-profile">
