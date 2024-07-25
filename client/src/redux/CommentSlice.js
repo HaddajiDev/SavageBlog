@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const AddComment = createAsyncThunk("comment", async({id, user}) => {
     try {
-        const result = await axios.post(`http://localhost:3000/comment/${id}/comments`, user);
+        const result = await axios.post(`https://savage-blog-back.vercel.app/comment/${id}/comments`, user);
     } catch (error) {
         
     }
@@ -13,7 +13,7 @@ export const AddComment = createAsyncThunk("comment", async({id, user}) => {
 
 export const DeleteComment = createAsyncThunk("comment/delete", async (id, { rejectWithValue }) => {
     try {
-        const result = await axios.delete(`http://localhost:3000/comment/${id}`);
+        const result = await axios.delete(`https://savage-blog-back.vercel.app/comment/${id}`);
         return result.data;
     } catch (error) {
         return rejectWithValue(error.response.data);
@@ -22,7 +22,7 @@ export const DeleteComment = createAsyncThunk("comment/delete", async (id, { rej
 
 export const UpdateComment = createAsyncThunk("comment/update", async ({ id, body }, { rejectWithValue }) => {
     try {
-        const result = await axios.put(`http://localhost:3000/comment/${id}`, { body });
+        const result = await axios.put(`https://savage-blog-back.vercel.app/comment/${id}`, { body });
         return result.data;
     } catch (error) {
         return rejectWithValue(error.response.data);

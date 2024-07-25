@@ -19,7 +19,7 @@ const sendVerificationEmail = async (user) => {
       to: user.email,
       subject: 'Email Verification',
       html: `<p>Please verify your email by clicking the link:</p><br />
-       <a href='http://${process.env.HOST}/api/verify/email/${user._id}'>verify here</a>`
+       <a href='https://savage-blog-back.vercel.app/api/verify/email/${user._id}'>verify here</a>`
     };
 
     await transporter.sendMail(mailOptions);

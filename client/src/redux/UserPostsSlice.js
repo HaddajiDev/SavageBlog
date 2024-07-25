@@ -5,7 +5,7 @@ export const GetUserPosts_2 = createAsyncThunk(
   'user/posterUser_2',
   async ({ id, page }) => {
     try {
-      const response = await axios.get(`http://localhost:3000/user/allposts/${id}?page=${page}`);
+      const response = await axios.get(`https://savage-blog-back.vercel.app/user/allposts/${id}?page=${page}`);
       return response.data.posts;
     } catch (error) {
       console.log(error);

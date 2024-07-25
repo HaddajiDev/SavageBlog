@@ -4,7 +4,7 @@ import axios from 'axios';
 
 export const userRegister = createAsyncThunk("user/register", async(user, {rejectWithValue})=>{
 	try {
-		let response = await axios.post('http://localhost:3000/user/register', user);
+		let response = await axios.post('https://savage-blog-back.vercel.app/user/register', user);
 		return await response.data;
 	} catch (error) {
 		console.log(error);
@@ -14,7 +14,7 @@ export const userRegister = createAsyncThunk("user/register", async(user, {rejec
 
 export const userLogin = createAsyncThunk("user/login", async(user, {rejectWithValue})=>{
 	try {
-		let response = await axios.post('http://localhost:3000/user/login', user);		
+		let response = await axios.post('https://savage-blog-back.vercel.app/user/login', user);
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -24,7 +24,7 @@ export const userLogin = createAsyncThunk("user/login", async(user, {rejectWithV
 
 export const currentUser = createAsyncThunk("user/current", async()=>{
 	try {
-		let result = await axios.get('http://localhost:3000/user/current', {
+		let result = await axios.get('https://savage-blog-back.vercel.app/user/current', {
 			headers:{
 				Authorization: localStorage.getItem("token"),
 			}
@@ -37,7 +37,7 @@ export const currentUser = createAsyncThunk("user/current", async()=>{
 
 export const verifyEmail = createAsyncThunk("user/verifyEmail", async(id) => {
 	try {
-	  const response = await axios.get(`http://localhost:3000/api/verify/email/${id}`);
+	  const response = await axios.get(`https://savage-blog-back.vercel.app/api/verify/email/${id}`);
 	  return response.data;
 	} catch (error) {
 	  console.error('Error during email verification:', error.response ? error.response.data : error.message);
@@ -49,7 +49,7 @@ export const GetUserPosts = createAsyncThunk(
     'user/getposts',
     async ({ id, page }, { rejectWithValue }) => {
         try {
-            const response = await axios.get(`http://localhost:3000/user/allposts/${id}?page=${page}`);
+            const response = await axios.get(`https://savage-blog-back.vercel.app/user/allposts/${id}?page=${page}`);
             return response.data.posts;
         } catch (error) {
             return rejectWithValue(error.message);
@@ -59,7 +59,7 @@ export const GetUserPosts = createAsyncThunk(
 
 export const UpdateUser = createAsyncThunk('user/update', async({ id, edited }) => {
     try {
-        const response = await axios.put(`http://localhost:3000/user/${id}`, edited);
+        const response = await axios.put(`https://savage-blog-back.vercel.app/user/${id}`, edited);
         return response.data;
     } catch (error) {
         console.log(error);
@@ -70,7 +70,7 @@ export const UpdateUser = createAsyncThunk('user/update', async({ id, edited }) 
 
 export const GetUserNotifications = createAsyncThunk("user/notify", async(id) => {
 	try {
-		const response = await axios.get(`http://localhost:3000/user/notification/${id}`);
+		const response = await axios.get(`https://savage-blog-back.vercel.app/user/notification/${id}`);
 	  	return response.data;
 	} catch (error) {
 		console.log(error);
@@ -79,7 +79,7 @@ export const GetUserNotifications = createAsyncThunk("user/notify", async(id) =>
 
 export const GetUserNotificationsRead = createAsyncThunk("user/notifyRead", async(id) => {
 	try {
-		const response = await axios.post(`http://localhost:3000/user/notification/read/${id}`);
+		const response = await axios.post(`https://savage-blog-back.vercel.app/user/notification/read/${id}`);
 	  	return response.data;
 	} catch (error) {
 		console.log(error);
@@ -88,7 +88,7 @@ export const GetUserNotificationsRead = createAsyncThunk("user/notifyRead", asyn
 
 export const GetAllusers = createAsyncThunk('user/all', async() => {
 	try {
-		const response = await axios.get('http://localhost:3000/user/');
+		const response = await axios.get('https://savage-blog-back.vercel.app/user/');
 		return response.data;
 	} catch (error) {
 		console.log(error);
@@ -97,7 +97,7 @@ export const GetAllusers = createAsyncThunk('user/all', async() => {
 
 export const DeleteUser = createAsyncThunk('user/delete', async(id) => {
 	try {
-		const response = await axios.delete(`http://localhost:3000/user/${id}`);
+		const response = await axios.delete(`https://savage-blog-back.vercel.app/user/${id}`);
 		return response.data;
 	} catch (error) {
 		console.log(error);

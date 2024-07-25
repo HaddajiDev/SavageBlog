@@ -4,7 +4,7 @@ import axios from 'axios';
 // Publish a new poster
 export const PublishPoster = createAsyncThunk('poster/publish', async (poster) => {
   try {
-    const result = await axios.post('http://localhost:3000/post/', poster);
+    const result = await axios.post('https://savage-blog-back.vercel.app/post/', poster);
     return result.data;
   } catch (error) {
      
@@ -14,7 +14,7 @@ export const PublishPoster = createAsyncThunk('poster/publish', async (poster) =
 // Get all posters
 export const GetAllposters = createAsyncThunk('poster/all', async (page = 1, { rejectWithValue }) => {
   try {
-    const response = await axios.get(`http://localhost:3000/post/?page=${page}`);
+    const response = await axios.get(`https://savage-blog-back.vercel.app/post/?page=${page}`);
     return response.data.posts;
   } catch (error) {
     
@@ -25,7 +25,7 @@ export const GetAllposters = createAsyncThunk('poster/all', async (page = 1, { r
 // Like a post
 export const LikePost = createAsyncThunk('poster/like', async ({ id, userId }) => {
   try {
-    const result = await axios.post(`http://localhost:3000/post/${id}/like/`, { userId });
+    const result = await axios.post(`https://savage-blog-back.vercel.app/post/${id}/like/`, { userId });
     return result.data;
   } catch (error) {
     
@@ -35,7 +35,7 @@ export const LikePost = createAsyncThunk('poster/like', async ({ id, userId }) =
 // Dislike a post
 export const DislikePost = createAsyncThunk('poster/dislike', async ({ id, userId }) => {
   try {
-    const result = await axios.post(`http://localhost:3000/post/${id}/dislike/`, { userId });
+    const result = await axios.post(`https://savage-blog-back.vercel.app/post/${id}/dislike/`, { userId });
     return result.data;
   } catch (error) {
     
@@ -45,7 +45,7 @@ export const DislikePost = createAsyncThunk('poster/dislike', async ({ id, userI
 // Get comments for a post
 export const GetComments = createAsyncThunk('poster/comment', async (id) => {
   try {
-    const result = await axios.get(`http://localhost:3000/post/${id}/comments/`);
+    const result = await axios.get(`https://savage-blog-back.vercel.app/post/${id}/comments/`);
     return { postId: id, comments: result.data.comments };
   } catch (error) {
     
@@ -54,7 +54,7 @@ export const GetComments = createAsyncThunk('poster/comment', async (id) => {
 
 export const GetPoster = createAsyncThunk('poster/one', async (id) => {
   try {
-    const result = await axios.get(`http://localhost:3000/post/${id}/`);
+    const result = await axios.get(`https://savage-blog-back.vercel.app/post/${id}/`);
     return result.data;
   } catch (error) {
     
@@ -63,7 +63,7 @@ export const GetPoster = createAsyncThunk('poster/one', async (id) => {
 
 export const DeletePoster = createAsyncThunk('poster/delete', async(id) => {
   try {
-    const result = await axios.delete(`http://localhost:3000/post/${id}/`);
+    const result = await axios.delete(`https://savage-blog-back.vercel.app/post/${id}/`);
     return result.data;
   } catch (error) {
     
@@ -73,7 +73,7 @@ export const DeletePoster = createAsyncThunk('poster/delete', async(id) => {
 
 export const UpdatePoster = createAsyncThunk('poster/update', async({id, edited}) => {
   try {
-    const result = await axios.put(`http://localhost:3000/post/${id}/`, edited);
+    const result = await axios.put(`https://savage-blog-back.vercel.app/post/${id}/`, edited);
     return result.data;
   } catch (error) {
     
