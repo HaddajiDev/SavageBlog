@@ -114,7 +114,7 @@ router.get('/verify/email/:id', async (req, res) => {
       user.isVerified = true;
       await user.save();
   
-      res.redirect(`${process.env.FRONTEND_URL}/`);
+      res.redirect(`https://savage-blog-front.vercel.app/`);
 
     } catch (error) {
       console.error('Verification error:', error);
