@@ -15,8 +15,7 @@ function UserPage() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  // Fetch posts when user ID or page changes
-  
+
   useEffect(() => {
     if (state && state._id) {
       const fetchPosts = async () => {

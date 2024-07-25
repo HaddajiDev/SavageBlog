@@ -106,8 +106,6 @@ function PostAPost() {
     setIsLoading(false);
     await sleep(500);
     window.location.reload();
-    //navigate('/');
-
 
     setPoster({
       title: '',

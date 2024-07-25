@@ -10,7 +10,7 @@ function PostsList() {
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
 
-  // Number of posts per page
+  
   const pageSize = 10;
 
   useEffect(() => {
@@ -19,8 +19,7 @@ function PostsList() {
       try {
         const result = await dispatch(GetAllposters(page));
         const fetchedPosts = result.payload;
-
-        // Update the 'hasMore' state based on the number of posts fetched
+        
         if (fetchedPosts.length < pageSize) {
           setHasMore(false);
         }

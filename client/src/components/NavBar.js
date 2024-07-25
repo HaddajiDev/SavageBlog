@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { GetUserNotifications, logout, userLogin, GetUserNotificationsRead } from '../redux/UserSlice';
 import logo from '../logo_.png';
 
@@ -8,8 +8,7 @@ import logo from '../logo_.png';
 function Navbar() {
     const user = useSelector((state) => state.user.user);
     const notifications = useSelector((state) => state.user.notifications);
-    const dispatch = useDispatch();
-    const navigate = useNavigate();
+    const dispatch = useDispatch();    
     
     const [user_, setUser] = useState({ email: '', password: '' });
     const [showDropdown, setShowDropdown] = useState(false);

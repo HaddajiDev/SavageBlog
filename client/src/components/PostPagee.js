@@ -3,8 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { DislikePost, GetComments, GetPoster, LikePost } from '../redux/PosterSlice';
 import { AddComment } from '../redux/CommentSlice';
-import PostCard, { timeFromNow } from './PostCard';
-import CommentDropDown from './CommentDropDown';
+import PostCard from './PostCard';
 
 function PostPagee() {
     const location = useLocation();
@@ -71,74 +70,7 @@ function PostPagee() {
     }, []);
 
     return (
-        <div className="post-page-container">
-            {/* <div className="post-card">
-                <div className='pr-author'>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-                        {displayPost.author.profileImageUrl ? (
-                            <img src={displayPost.author.profileImageUrl} className='pr_image' alt={displayPost.author.username} />
-                        ) : (
-                            <img src={generateAvatarUrl(displayPost.author.username)} className='pr_image' alt={displayPost.author.username} />
-                        )}
-                        <h6>{displayPost.author.username}</h6>
-                    </div>
-                    <div>
-                        <p style={{ fontSize: '12px' }}>{displayPost.updatedAt ? <>updated {timeFromNow(displayPost.createdAt)}</> : timeFromNow(post.createdAt)}</p>
-                    </div>
-                </div>
-                <h1>{displayPost.title}</h1>
-                <p>{displayPost.body}</p>
-                {displayPost.imageUrl ? <img src={displayPost.imageUrl} alt="" className="img-fluid" /> : null}
-                <div className='likesContainer'>
-                    <div className='btnContainer'>
-                        <button onClick={handleLike} className="btn btn-primary">
-                            <i className="fa fa-thumbs-up" aria-hidden="true"></i>{displayPost.likes}
-                        </button>
-                    </div>
-                    <div className='btnContainer'>
-                        <button onClick={handleDislike} className="btn btn-danger">
-                            <i className="fa fa-thumbs-down" aria-hidden="true"></i>{displayPost.dislikes}
-                        </button>
-                    </div>
-                </div>
-
-                <p className='mt-2'>Comments</p>
-                <div className='comments-section'>
-                    {comments.length > 0 ? comments.slice().reverse().map((el) => (
-                        <div className='comment' key={el._id}>
-                            <div>
-                                {el.profileImageUrl ? (
-                                    <img src={el.profileImageUrl} alt={el.username} />
-                                ) : (
-                                    <img src={generateAvatarUrl(el.username)} alt={el.username} />
-                                )}
-                            </div>
-                            <div style={{ display: 'flex', flexDirection: 'column' }}>
-                                <div style={{ display: 'flex', gap: '10px', alignItems: 'center' }}>
-                                    <p>{el.username}</p>
-                                    <p style={{ fontSize: '12px' }}>{timeFromNow(el.createdAt)}</p>
-                                </div>
-                                <h1>{el.body}</h1>
-                            </div>
-                            
-                        </div>
-                    )) : (
-                        <div className='noComment'><p>No comments</p></div>
-                    )}
-                </div>
-
-                <div className='comment-field'>
-                    <input
-                        type='text'
-                        placeholder='Leave a comment'
-                        value={comment}
-                        onChange={(e) => setComment(e.target.value)}
-                    />
-                    <button onClick={handleComment} style={{ all: 'unset' }}>
-                        <i className="fa fa-paper-plane" aria-hidden="true"></i>
-                    </button>
-                </div>
-            </div> */}
+        <div className="post-page-container">            
             <PostCard post={post} check={"page"}/>
         </div>
     );

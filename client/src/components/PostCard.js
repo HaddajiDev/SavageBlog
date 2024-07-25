@@ -1,7 +1,7 @@
 import React, { useEffect, useState, forwardRef  } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { DeletePoster, DislikePost, GetComments, LikePost, UpdatePoster } from '../redux/PosterSlice';
-import { AddComment, DeleteComment } from '../redux/CommentSlice';
+import { AddComment } from '../redux/CommentSlice';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
 import CommentDropDown from './CommentDropDown';
@@ -64,9 +64,7 @@ function PostCard({ post, check, refreshPosts }) {
                 setLoading(false);
                 setComment('');
                 setping(!ping);
-                if(comments.length == 0 || comments.length == 1){
-                    //to={`/profile/${post.author?.username}`} state={post.author}
-                    //to={`/post/${post._id}`} state={post}
+                if(comments.length == 0 || comments.length == 1){                    
                     navigate(`/post/${post._id}`, { state: post }); 
                 }
                 
@@ -277,7 +275,7 @@ function PostCard({ post, check, refreshPosts }) {
                                 <Link 
                                     style={{ all: 'unset', cursor: 'pointer', width: '50%' }} 
                                     to={`/profile/${el.username}`} 
-                                    state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username }}
+                                    state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio }}
                                 >
                                     <div>
                                         <p className='comment_author'>{el.username}</p>                                        
