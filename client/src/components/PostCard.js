@@ -53,9 +53,9 @@ function PostCard({ post, check, refreshPosts }) {
 
     const [commentLength, setCommentLength] = useState(0);
     const handleComment = async () => {
-        if(commentLength > 50){
+        if(commentLength > 100){
             setLoading(false);
-            Swal.fire('Error', 'Comment reaches the limit of 50 caracteres.', 'error');
+            Swal.fire('Error', 'Comment reaches the limit of 100 caracteres.', 'error');
             return;
         }
         if (comment.trim()) {
@@ -372,7 +372,7 @@ function PostCard({ post, check, refreshPosts }) {
                 </button>
             </div>
             <div className='counterLength commentCounter'>
-                {commentLength <= 50 ? <p>{commentLength} / 50</p> : <p style={{color:'red'}}>{commentLength} / 50</p>}
+                {commentLength <= 50 ? <p>{commentLength} / 50</p> : <p style={{color:'red'}}>{commentLength} / 100</p>}
             </div>
 
             {check == "check" ? comments.length > 2 && (
