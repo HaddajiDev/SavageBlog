@@ -12,15 +12,12 @@ function Login() {
 
   const dispatch = useDispatch();
   
-  const { status, error } = useSelector((state) => state.user);
-
+  const { status, error } = useSelector((state) => state.user);  
   
   const handleLogin = async () => {
     
-    try {
-      setLoading(true);
-      await dispatch(userLogin(user)).unwrap();
-      setLoading(false);
+    try {      
+      await dispatch(userLogin(user)).unwrap();      
     } catch (error) {
       console.error('Failed to login:', error);
     }
