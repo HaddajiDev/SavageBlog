@@ -372,7 +372,7 @@ function PostCard({ post, check, refreshPosts }) {
                 </button>
             </div>
             <div className='counterLength commentCounter'>
-                {commentLength <= 50 ? <p>{commentLength} / 50</p> : <p style={{color:'red'}}>{commentLength} / 100</p>}
+                {commentLength <= 100 ? <p>{commentLength} / 100</p> : <p style={{color:'red'}}>{commentLength} / 100</p>}
             </div>
 
             {check == "check" ? comments.length > 2 && (
