@@ -96,7 +96,8 @@ function UpdatedPoster() {
     };
 
     return (
-        <div className="post-card post-container">
+        <div className='conti'>
+<div className="post-card post-container">
             <h1>Update Post</h1>
             <div className="form-group">
                 <label htmlFor="title">Title</label>
@@ -144,6 +145,8 @@ function UpdatedPoster() {
                     cancel
             </button>
         </div>
+        </div>
+        
     );
 }
 
