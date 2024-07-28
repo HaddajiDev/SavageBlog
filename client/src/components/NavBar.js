@@ -52,7 +52,7 @@ function Navbar() {
     const unreadCount = notifications?.filter(notification => !notification.read).length;
 
     return (
-        <nav className="navbar navbar-expand-lg navbar-light bg-light">
+        <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{width: "100%"}}>
             <div className="container cont">
                 <Link className="navbar-brand logocon" to='/'><img src={logo} className='logo' alt='' style={{width: '180px'}}/></Link>
                 {user ? (

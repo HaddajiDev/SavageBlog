@@ -70,7 +70,7 @@ function UserPage() {
           <img src={generateAvatarUrl(state.username)} alt={`${state.username}'s profile`} className="profile-image" />
         )}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h1>{state?.username}</h1>
+          <h1 className='userPageName'>{state?.username}</h1>
           {state?.bio}
         </div>
       </div>

@@ -97,54 +97,57 @@ function UpdatedPoster() {
 
     return (
         <div className='conti'>
-<div className="post-card post-container">
-            <h1>Update Post</h1>
-            <div className="form-group">
-                <label htmlFor="title">Title</label>
-                <input
-                    type="text"
-                    id="title"
-                    value={title}
-                    onChange={(e) => setTitle(e.target.value)}
-                    className="post-input"
-                />
+            <div className="post-container">
+                <h1>Update Post</h1>
+                <div className="form-group">
+                    <label htmlFor="title">Title</label>
+                    <input
+                        type="text"
+                        id="title"
+                        value={title}
+                        onChange={(e) => setTitle(e.target.value)}
+                        className="post-input"
+                    />
+                </div>
+                <div className="form-group">
+                    <label htmlFor="body">Body</label>
+                    <textarea
+                        id="body"
+                        value={body}
+                        onChange={(e) => setBody(e.target.value)}
+                        className="post-textarea"
+                    ></textarea>
+                </div>
+                <div className="form-group">
+                    <label htmlFor="imageUrl">Image</label>
+                    <input
+                        type="file"
+                        id="imageUrl"
+                        onChange={handleImageChange}
+                        className="form-control"
+                    />
+                    {newImage ? (
+                        <img src={URL.createObjectURL(newImage)} alt="New" className="img-fluid mt-2" />
+                    ) : (
+                        imageUrl && <img src={imageUrl} alt="Current" className="img-fluid mt-2" />
+                    )}
+                </div>
+                <div style={{display: 'flex', flexDirection: 'column'}}>
+                    {loading ? (
+                        <button className="btn btn-primary mt-3">
+                            <i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
+                        </button>
+                    ) : (
+                        <button onClick={handleUpdate} className="btn btn-primary mt-3">
+                            Update Post
+                        </button>
+                    )}
+                    <button onClick={() => navigate('/')} className="btn btn-secondary mt-3">
+                            cancel
+                    </button>
+                </div>
+                
             </div>
-            <div className="form-group">
-                <label htmlFor="body">Body</label>
-                <textarea
-                    id="body"
-                    value={body}
-                    onChange={(e) => setBody(e.target.value)}
-                    className="post-textarea"
-                ></textarea>
-            </div>
-            <div className="form-group">
-                <label htmlFor="imageUrl">Image</label>
-                <input
-                    type="file"
-                    id="imageUrl"
-                    onChange={handleImageChange}
-                    className="form-control"
-                />
-                {newImage ? (
-                    <img src={URL.createObjectURL(newImage)} alt="New" className="img-fluid mt-2" />
-                ) : (
-                    imageUrl && <img src={imageUrl} alt="Current" className="img-fluid mt-2" />
-                )}
-            </div>
-            {loading ? (
-                <button className="btn btn-primary mt-3">
-                    <i className="fa fa-spinner fa-pulse fa-2x fa-fw"></i>
-                </button>
-            ) : (
-                <button onClick={handleUpdate} className="btn btn-primary mt-3">
-                    Update Post
-                </button>
-            )}
-			<button onClick={() => navigate('/')} className="btn btn-secondary mt-3">
-                    cancel
-            </button>
-        </div>
         </div>
         
     );

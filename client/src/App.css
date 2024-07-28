@@ -872,3 +872,10 @@
   width: 140px !important;
   margin: 0 !important;
 }
+
+
+.userPageName{
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
