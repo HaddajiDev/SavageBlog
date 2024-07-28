@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import {  userLogin } from '../redux/UserSlice';
 
 
@@ -11,9 +11,10 @@ function Login() {
   });
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   
   const { status, error } = useSelector((state) => state.user);  
-  
+  const currentUser = useSelector((state) => state.user.user);
   const handleLogin = async () => {
     
     try {      
@@ -22,6 +23,15 @@ function Login() {
       console.error('Failed to login:', error);
     }
   };
+
+  useEffect(() => {
+    if(currentUser && !currentUser.isVerfied){
+      navigate('/verify');
+    }
+    else if(currentUser && currentUser.isVerfied){
+      navigate('/');
+    }
+  })
 
   return (
     <div className='conti'>
