@@ -304,8 +304,8 @@ router.delete('/:id', async (req, res) => {
         return res.status(404).send({ message: 'Friend not found' });
       }
 
-      const userAlreadyFriend = user.friends.some(f => f.friendId.toString() === friendId);
-    const friendAlreadyFriend = friend.friends.some(f => f.friendId.toString() === userId);
+      const userAlreadyFriend = user.friends.some(f => f.freindId.toString() === friendId);
+      const friendAlreadyFriend = friend.friends.some(f => f.freindId.toString() === userId);
 
     if (userAlreadyFriend || friendAlreadyFriend) {      
       friend.friendInvitation = friend.friendInvitation.filter(invite => invite.userId.toString() !== userId);

@@ -84,18 +84,18 @@ function UserPage() {
     const isFriend = currentUser.friends.some(friend => friend.freindId === viewedUser._id);
   
     if (isFriend) {
-      return <button disabled>Friends</button>;
+      return <button className='buttonPage' disabled>Friends</button>;
     } else if (receivedInvite) {
       return (
-        <>
-          <button onClick={() => acceptRequest(viewedUser._id)}>Accept</button>
-          <button onClick={() => declineRequest(viewedUser._id)}>Decline</button>
-        </>
+        <div style={{display: 'flex', gap: '10px'}}>
+          <button className='buttonPage accept' onClick={() => acceptRequest(viewedUser._id)}>Accept</button>
+          <button className='buttonPage decline' onClick={() => declineRequest(viewedUser._id)}>Decline</button>
+        </div>
       );
     } else if (sentInvite) {
-      return <button disabled>Sent</button>;
+      return <button className='buttonPage' disabled>Request Sent</button>;
     } else {
-      return <button onClick={sentInviteFunc}>Add Friend</button>;
+      return <button className='buttonPage' onClick={sentInviteFunc}>Add Friend</button>;
     }
   };
   
