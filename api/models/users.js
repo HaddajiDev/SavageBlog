@@ -91,16 +91,14 @@ userSchema.pre('save', async function (next) {
       { $group: { _id: null, maxRoom: { $max: '$friends.room' } } },
     ]);
 
-    let nextRoomNumber = 2; // Start with the first even number
+    let nextRoomNumber = 2;
     if (maxRoom.length > 0 && maxRoom[0].maxRoom) {
-      nextRoomNumber = Math.ceil(maxRoom[0].maxRoom / 2) * 2 + 2; // Ensure it's the next even number
+      nextRoomNumber = Math.ceil(maxRoom[0].maxRoom / 2) * 2 + 2;
     }
 
     for (let friend of user.friends) {
       if (!friend.room) {
-        friend.room = nextRoomNumber;
-
-        // Find the corresponding friend and update their room number as well
+        friend.room = nextRoomNumber;        
         const correspondingFriend = await mongoose.model('User').findById(friend.freindId);
         if (correspondingFriend) {
           const userInCorrespondingFriendList = correspondingFriend.friends.find(f => f.freindId.equals(user._id));
@@ -109,8 +107,7 @@ userSchema.pre('save', async function (next) {
             await correspondingFriend.save();
           }
         }
-
-        nextRoomNumber += 2; // Increment by 2 to keep room numbers even
+        nextRoomNumber += 2;
       }
     }
   }

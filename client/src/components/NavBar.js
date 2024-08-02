@@ -75,7 +75,7 @@ function Navbar() {
                                             {unreadCount > 0 && <span className="notification-badge">{unreadCount}</span>}
                                             {showDropdown && (
                                                 <div className="notification-dropdown">
-                                                    {notificationsUp?.slice(0, 5).map((notification, index) => {
+                                                    {notificationsUp.length > 0 ?notificationsUp?.slice(0, 5).map((notification, index) => {
                                                         const [username, ...msgParts] = notification.msg.split(' ');
                                                         const msg = msgParts.join(' ');
                                                         const profileImageUrl = notification.profileImageUrl || generateAvatarUrl(username);
@@ -90,7 +90,7 @@ function Navbar() {
                                                                 </div>
                                                             </Link>
                                                         );
-                                                    })}
+                                                    }): <>No notifications</>}
                                                 </div>
                                             )}
                                         </div>
