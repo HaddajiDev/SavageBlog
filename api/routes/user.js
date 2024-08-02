@@ -344,7 +344,7 @@ router.delete('/:id', async (req, res) => {
 
       await user.save();
       await friend.save();
-      res.status(200).send({ message: 'Friend added' });
+      res.status(200).send({ friends: user.friends });
     } catch (error) {
       
       res.status(500).send({ error });

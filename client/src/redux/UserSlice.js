@@ -332,6 +332,17 @@ export const UserSlice = createSlice({
 	})
 
 
+	.addCase(AcceptFriendRequset.pending, (state) => {
+		state.status = "pending";
+	})
+	.addCase(AcceptFriendRequset.fulfilled, (state, action) => {
+		state.status = "success";
+		state.friends = action.payload?.friends;
+	})
+	.addCase(AcceptFriendRequset.rejected, (state) => {
+		state.status = "failed";
+	})
+
 	.addCase(GetAllFriends.pending, (state) => {
 		state.status = "pending";
 	})

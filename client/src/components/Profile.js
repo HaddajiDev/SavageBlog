@@ -205,7 +205,7 @@ function Profile() {
           </button>
         </div>
         <p style={{textAlign: 'center', padding: '10px'}}>{currentuser?.bio}</p>
-        <Link style={{all: 'unset'}} to={`/friends/${currentuser.username}`} state={currentuser}>
+        <Link style={{all: 'unset'}} to={`/friends/${currentuser.username}`} >
           <button style={{display: 'flex', justifyContent: 'center'}} className='buttonPage'>Veiw All Freinds</button>
         </Link>
       </div>
