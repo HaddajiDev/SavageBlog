@@ -88,32 +88,34 @@ userSchema.pre('save', async function (next) {
   if (user.isModified('friends')) {
     const maxRoom = await mongoose.model('User').aggregate([
       { $unwind: '$friends' },
-      { $group: { _id: null, maxRoom: { $max: '$friends.room' } } }
+      { $group: { _id: null, maxRoom: { $max: '$friends.room' } } },
     ]);
 
     let nextRoomNumber = 2; // Start with the first even number
     if (maxRoom.length > 0 && maxRoom[0].maxRoom) {
-      nextRoomNumber = Math.ceil((maxRoom[0].maxRoom + 1) / 2) * 2; // Ensure it's even
+      nextRoomNumber = Math.ceil(maxRoom[0].maxRoom / 2) * 2 + 2; // Ensure it's the next even number
     }
 
     for (let friend of user.friends) {
       if (!friend.room) {
         friend.room = nextRoomNumber;
-        nextRoomNumber += 2; // Increment by 2 to keep room numbers even
 
         // Find the corresponding friend and update their room number as well
-        const correspondingFriend = await mongoose.model('User').findById(friend.friendId);
+        const correspondingFriend = await mongoose.model('User').findById(friend.freindId);
         if (correspondingFriend) {
-          const userInCorrespondingFriendList = correspondingFriend.friends.find(f => f.friendId.equals(user._id));
+          const userInCorrespondingFriendList = correspondingFriend.friends.find(f => f.freindId.equals(user._id));
           if (userInCorrespondingFriendList) {
             userInCorrespondingFriendList.room = friend.room;
             await correspondingFriend.save();
           }
         }
+
+        nextRoomNumber += 2; // Increment by 2 to keep room numbers even
       }
     }
   }
   next();
 });
+
 
 module.exports = mongoose.model('User', userSchema);
