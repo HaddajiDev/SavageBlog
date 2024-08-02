@@ -19,6 +19,7 @@ import UpdatedPoster from './components/UpdatedPoster';
 import DashBoard from './components/DashBoard';
 
 import AdminPrivateRoute from './components/AdminPrivateRoute';
+import FriendRequestsPage from './components/FriendRequestsPage';
 
 function App() {
   const isAuth = localStorage.getItem("token");
@@ -43,6 +44,7 @@ function App() {
           <Route path='/post/:id' element={<PostPagee />}/>
           <Route path='/profile/:id' element={<UserPage />}/>
           <Route path='/updatePost' element={<UpdatedPoster />}/>
+          <Route path='/invitation' element={<FriendRequestsPage />} />
         </Route>
         <Route element={<ValiditionPrivateRoute state="login" />}>
           <Route path='/login' element={<Login />} />

@@ -147,7 +147,9 @@ router.get('/allposts/:id', async (req, res) => {
                 author: {
                     username: author.username,
                     profileImageUrl: author.profileImageUrl,
-                    bio: author.bio
+                    bio: author.bio,
+                    friendInvitation: author.friendInvitation,
+                    friends: author.friends
                 },
                 comments: post.comments,
                 category: post.category,
@@ -256,6 +258,195 @@ router.delete('/:id', async (req, res) => {
   });
 
 
+
+  //send invi
+  router.post('/sendInvite', async (req, res) => {
+    try {
+      const { userId, friendId } = req.body;
+  
+      const user = await User.findById(friendId);
+      const friend = await User.findById(userId); //me
+      if (!user) {
+        return res.status(404).send({ message: 'User not found' });
+      }
+      const existingInvite = user.friendInvitation.some(invite => invite.userId.toString() === userId.toString());
+    if (existingInvite) {
+      return res.status(400).send({ message: 'Invitation already sent' });
+    }
+
+      const username = friend.username;
+      const bio = friend.bio;
+      const body = username + " sent you an invitation";
+      const imageUrl = friend.profileImageUrl;
+      user.friendInvitation.push({ userId, imageUrl, username, body, bio});
+      
+      await user.save();
+  
+      res.status(200).send({ message: 'Friend invitation sent' });
+    } catch (error) {
+      
+      res.status(500).send({ error });
+    }
+  });
+  
+  // Add friend
+  router.post('/addFriend', async (req, res) => {
+    try {
+      const { userId, friendId } = req.body;
+  
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(404).send({ message: 'User not found' });
+      }
+  
+      const friend = await User.findById(friendId);
+      if (!friend) {
+        return res.status(404).send({ message: 'Friend not found' });
+      }
+
+      const userAlreadyFriend = user.friends.some(f => f.friendId.toString() === friendId);
+    const friendAlreadyFriend = friend.friends.some(f => f.friendId.toString() === userId);
+
+    if (userAlreadyFriend || friendAlreadyFriend) {      
+      friend.friendInvitation = friend.friendInvitation.filter(invite => invite.userId.toString() !== userId);
+      await friend.save();
+      return res.status(200).send({ message: 'Invitation removed (already friends)' });
+    }
+  
+      friend.friends.push({freindId: userId });
+      user.friends.push({ freindId: friendId });
+
+      user.friendInvitation = user.friendInvitation.filter(invite => invite.userId.toString() !== friendId);
+      friend.friendInvitation = friend.friendInvitation.filter(invite => invite.userId.toString() !== userId);
+
+
+      await user.save();
+      await friend.save();
+      res.status(200).send({ message: 'Friend added' });
+    } catch (error) {
+      
+      res.status(500).send({ error });
+    }
+  });
+  
+  // Remove friend invitation
+  router.delete('/friend/removeInvite', async (req, res) => {
+    try {
+      const { userId, friendId } = req.body;  
+      
+      if (!userId || !friendId) {        
+        return res.status(400).send({ message: 'Missing userId or friendId' });
+      }
+  
+      const user = await User.findById(userId);
+      if (!user) {        
+        return res.status(404).send({ message: 'User not found' });
+      }
+  
+      if (!user.friendInvitation || !Array.isArray(user.friendInvitation)) {        
+        return res.status(400).send({ message: 'Invalid friend invitation list' });
+      }
+  
+      const initialLength = user.friendInvitation.length;
+      user.friendInvitation = user.friendInvitation.filter(invite => invite.userId.toString() !== friendId);
+  
+      const finalLength = user.friendInvitation.length;
+      if (initialLength === finalLength) {        
+        return res.status(404).send({ message: 'No friend invitation found with the provided friendId' });
+      }
+  
+      await user.save();      
+      res.status(200).send({ message: 'Friend invitation removed' });
+    } catch (error) {      
+      res.status(500).send({ error: 'Internal server error' });
+    }
+  });
+  
+  
+
+
+  //remove Friend
+  router.delete('/friend/removeFriend', async (req, res) => {
+    try {
+      const { userId, friendId } = req.body;
+    
+      const user = await User.findById(userId);
+      if (!user) {        
+        return res.status(404).send({ message: 'User not found' });
+      }
+  
+      const friend = await User.findById(friendId);
+      if (!friend) {        
+        return res.status(404).send({ message: 'Friend not found' });
+      }
+
+      const userIdStr = userId.toString();
+      const friendIdStr = friendId.toString();
+  
+      const initialUserFriendsCount = user.friends.length;
+      user.friends = user.friends.filter(f => f.friendId && f.friendId.toString() !== friendIdStr);
+      const finalUserFriendsCount = user.friends.length;
+  
+      const initialFriendFriendsCount = friend.friends.length;
+      friend.friends = friend.friends.filter(f => f.friendId && f.friendId.toString() !== userIdStr);
+      const finalFriendFriendsCount = friend.friends.length;
+  
+      if (initialUserFriendsCount === finalUserFriendsCount && initialFriendFriendsCount === finalFriendFriendsCount) {        
+        return res.status(404).send({ message: 'No friend relationship found with the provided friendId' });
+      }
+  
+      await user.save();
+      await friend.save();  
+      
+      res.status(200).send({ message: 'Friend removed' });
+    } catch (error) {
+      res.status(500).send({ error: 'Internal server error' });
+    }
+  });
+  
+  
+  router.get('/friend/all/:id', async(req, res) => {
+    const userId = req.params.id;
+    try {
+      const user = await User.findById(userId);
+      res.send({friends: user.friends});
+    } catch (error) {
+      res.send({error: error});
+    }
+  })
+
+  router.get('/invite/all/:id', async(req, res) => {
+    const userId = req.params.id;
+    try {
+      const user = await User.findById(userId);
+      res.send({invitations: user.friendInvitation});
+    } catch (error) {
+      res.send({error: error});
+    }
+  })
+
+
+  router.post('/invitation/read/:id', async (req, res) => {
+    try {
+      const userId = req.params.id;
+      const user = await User.findById(userId);
+  
+      if (user) {
+        user.friendInvitation.forEach(invitation => {
+          if (invitation.read === false) {
+            invitation.read = true;
+          }
+        });
+        await user.save();
+        res.send({ success: true });
+      } else {
+        res.status(404).send({ error: 'User not found' });
+      }
+    } catch (error) {
+      res.status(500).send({ error: error.message });
+    }
+  });
+  
   
 
 module.exports = router;

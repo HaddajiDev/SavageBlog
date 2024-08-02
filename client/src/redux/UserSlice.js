@@ -104,6 +104,73 @@ export const DeleteUser = createAsyncThunk('user/delete', async(id) => {
 	}
 });
 
+export const sendFriendRequset = createAsyncThunk('user/requestFriend', async({userId, friendId}) => {
+	try {
+		const response = await axios.post(`https://savage-blog-back.vercel.app/user/sendInvite`, {userId, friendId});
+		return response.data;
+	} catch (error) {
+		
+	}
+});
+
+export const AcceptFriendRequset = createAsyncThunk('user/AcceptRequest', async({ userId, friendId }) => {
+	try {
+		const response = await axios.post(`https://savage-blog-back.vercel.app/user/addFriend`, {userId, friendId});
+		return response.data;
+	} catch (error) {
+		
+	}
+});
+
+export const RejectFriendRequest = createAsyncThunk('user/RejectInvite', async ({ userId, friendId }) => {
+	try {
+	  const response = await axios.delete('https://savage-blog-back.vercel.app/user/friend/removeInvite', {
+		data: { userId, friendId }
+	  });
+	  return response.data;
+	} catch (error) {
+	  console.error('Error rejecting friend request:', error);
+	  throw error;
+	}
+  });
+
+export const removeFriend = createAsyncThunk('user/removeFriend', async({userId, friendId}) => {
+	try {
+		const response = await axios.delete(`https://savage-blog-back.vercel.app/user/friend/removeFriend`, {userId, friendId});
+		return response.data;
+	} catch (error) {
+		
+	}
+});
+
+
+export const GetAllFriends = createAsyncThunk('user/allFriends', async(id) => {
+	try {
+		const response = await axios.get(`https://savage-blog-back.vercel.app/user/friend/all/${id}`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
+});
+
+export const GetAllInvitation = createAsyncThunk('user/allInvitation', async(id) => {
+	try {
+		const response = await axios.get(`https://savage-blog-back.vercel.app/user/invite/all/${id}`);
+		return response.data; 
+	} catch (error) {
+		console.log(error);
+	}
+});
+
+
+export const GetAllInvitationRead = createAsyncThunk('user/InvitionRead', async(id) => {
+	try {
+		const response = await axios.post(`https://savage-blog-back.vercel.app/user/invitation/read/${id}`);
+		return response.data;
+	} catch (error) {
+		console.log(error);
+	}
+})
 
 const initialState = {
   	user: null,
@@ -111,7 +178,9 @@ const initialState = {
 	posts: [],
 	notifications: null,
 	users: null,
-	error: null
+	error: null,
+	friends: null,
+	friendInvites: null,
 }
 
 export const UserSlice = createSlice({
@@ -254,13 +323,33 @@ export const UserSlice = createSlice({
 	})
 	.addCase(DeleteUser.fulfilled, (state, action) => {
 		state.status = "success";
-		
-
 	})
 	.addCase(DeleteUser.rejected, (state) => {
 		state.status = "failed";
 	})
 
+
+	.addCase(GetAllFriends.pending, (state) => {
+		state.status = "pending";
+	})
+	.addCase(GetAllFriends.fulfilled, (state, action) => {
+		state.status = "success";
+		state.friends = action.payload.friends;
+	})
+	.addCase(GetAllFriends.rejected, (state) => {
+		state.status = "failed";
+	})
+
+	.addCase(GetAllInvitation.pending, (state) => {
+		state.status = "pending";
+	})
+	.addCase(GetAllInvitation.fulfilled, (state, action) => {
+		state.status = "success";
+		state.friendInvites = action.payload.invitations;
+	})
+	.addCase(GetAllInvitation.rejected, (state) => {
+		state.status = "failed";
+	})
 	
   }
 })

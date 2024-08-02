@@ -54,6 +54,46 @@ const userSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  friendInvitation: [
+    {
+      userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
+      imageUrl: {type: String},
+      username: {type:String},
+      body: {type: String},
+      bio: {type: String},
+      read: {type: Boolean, default: false}
+    }
+  ],
+  friends: [
+    {
+      freindId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
+      room: {type: Number, unique: true, }
+    }
+  ]
+});
+
+
+//assign diffrent room number
+userSchema.pre('save', async function (next) {
+  const user = this;
+  if (user.isModified('friends')) {
+    const maxRoom = await mongoose.model('User').aggregate([
+      { $unwind: '$friends' },
+      { $group: { _id: null, maxRoom: { $max: '$friends.room' } } }
+    ]);
+
+    let nextRoomNumber = 1;
+    if (maxRoom.length > 0 && maxRoom[0].maxRoom) {
+      nextRoomNumber = maxRoom[0].maxRoom + 1;
+    }   
+    user.friends = user.friends.map(friend => {
+      if (!friend.room) {
+        friend.room = nextRoomNumber++;
+      }
+      return friend;
+    });
+  }
+  next();
 });
 
 module.exports = mongoose.model('User', userSchema);

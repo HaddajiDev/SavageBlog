@@ -3,31 +3,32 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { clearPosters, GetUserPosts_2 } from '../redux/UserPostsSlice';
 import PostCard from './PostCard';
+import { GetAllInvitation, sendFriendRequset, RejectFriendRequest, AcceptFriendRequset, GetAllFriends } from '../redux/UserSlice';
 
 function UserPage() {
-
-  useEffect(() => {
-    dispatch(clearPosters());
-  }, []);
-  
   const location = useLocation();
-  const { state } = location;
+  const { state: viewedUser } = location; // Renamed state to viewedUser for clarity
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.userPoster.posters);
   const status = useSelector((state) => state.userPoster.status);
+  const currentUser = useSelector((state) => state.user.user); // Renamed user to currentUser for clarity
+  const friendInvites = useSelector((state) => state.user.friendInvites) ?? []; // Default to an empty array
+  const friends = useSelector((state) => state.user.friends) ?? []; // Default to an empty array
 
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
-  const [hasMore, setHasMore] = useState(true);  
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    if (state && state._id) {
+    dispatch(clearPosters());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (viewedUser && viewedUser._id) {
       const fetchPosts = async () => {
         setLoading(true);
         try {
-          
-          const result = await dispatch(GetUserPosts_2({ id: state._id, page }));
-          
+          const result = await dispatch(GetUserPosts_2({ id: viewedUser._id, page }));
           const fetchedPosts = result.payload;
           if (fetchedPosts.length === 0) {
             setHasMore(false);
@@ -42,7 +43,7 @@ function UserPage() {
       };
       fetchPosts();
     }
-  }, [dispatch, state, page]);
+  }, [dispatch, viewedUser, page]);
 
   const loadMorePosts = () => {
     if (hasMore) {
@@ -56,24 +57,63 @@ function UserPage() {
 
   useEffect(() => {
     window.scrollTo(0, 0);
-    
   }, []);
 
+  useEffect(() => {
+    if (currentUser && currentUser._id) {
+      dispatch(GetAllInvitation(currentUser._id));
+      dispatch(GetAllFriends(currentUser._id));
+    }
+  }, [dispatch, currentUser]);
+
+  const sentInviteFunc = () => {
+    dispatch(sendFriendRequset({ userId: currentUser._id, friendId: viewedUser?._id }));
+  };
+
+  const acceptRequest = (friendId) => {
+    dispatch(AcceptFriendRequset({ userId: currentUser._id, friendId }));
+  };
+
+  const declineRequest = (friendId) => {
+    dispatch(RejectFriendRequest({ userId: currentUser._id, friendId }));
+  };
+
+  const checkInvitationStatus = () => {
+    const sentInvite = viewedUser.friendInvitation.some(invite => invite.userId === currentUser._id);    
+    const receivedInvite = currentUser.friendInvitation.some(invite => invite.userId === viewedUser._id);    
+    const isFriend = currentUser.friends.some(friend => friend.freindId === viewedUser._id);
+  
+    if (isFriend) {
+      return <button disabled>Friends</button>;
+    } else if (receivedInvite) {
+      return (
+        <>
+          <button onClick={() => acceptRequest(viewedUser._id)}>Accept</button>
+          <button onClick={() => declineRequest(viewedUser._id)}>Decline</button>
+        </>
+      );
+    } else if (sentInvite) {
+      return <button disabled>Sent</button>;
+    } else {
+      return <button onClick={sentInviteFunc}>Add Friend</button>;
+    }
+  };
   
 
   return (
     <div className="user-profile">
       <div className="profile-header">
-        {state?.profileImageUrl ? (
-          <img src={state.profileImageUrl} alt={`${state.username}'s profile`} className="profile-image" />
+        {viewedUser?.profileImageUrl ? (
+          <img src={viewedUser.profileImageUrl} alt={`${viewedUser.username}'s profile`} className="profile-image" />
         ) : (
-          <img src={generateAvatarUrl(state.username)} alt={`${state.username}'s profile`} className="profile-image" />
+          <img src={generateAvatarUrl(viewedUser.username)} alt={`${viewedUser.username}'s profile`} className="profile-image" />
         )}
         <div style={{ display: 'flex', flexDirection: 'column' }}>
-          <h1 className='userPageName'>{state?.username}</h1>
-          {state?.bio}
+          <h1 className='userPageName'>{viewedUser?.username}</h1>
+          {viewedUser?.bio}
         </div>
       </div>
+      {currentUser._id === viewedUser?._id ? null : checkInvitationStatus()}
 
       <div className="posts-list">
         {posts.length > 0 ? (

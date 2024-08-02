@@ -81,6 +81,7 @@ function PostCard({ post, check, refreshPosts }) {
         return `https://api.dicebear.com/9.x/thumbs/svg?seed=${username}&flip=true&backgroundColor=0a5b83,1c799f,69d2e7,f1f4dc,f88c49,b6e3f4,c0aede,d1d4f9,ffd5dc,ffdfbf&backgroundType=solid,gradientLinear&backgroundRotation=0,10,20&shapeColor=0a5b83,1c799f,69d2e7,f1f4dc,f88c49,transparent`;
     };
 
+    
     const commentSliced = comments.slice(-2).reverse();
 
     const toggleDropdown = () => {
@@ -262,9 +263,10 @@ function PostCard({ post, check, refreshPosts }) {
                             <Link 
                                 style={{ all: 'unset', cursor: 'pointer' }} 
                                 to={`/profile/${el.username}`} 
-                                state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio }}
+                                state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio, friendInvitation: el.friendInvitation, friends: el.friends }}
                                 onClick={() => dispatch(clearPosters())}
                             >
+                                {console.log(el)}
                                 {el.profileImageUrl ? (
                                     <img src={el.profileImageUrl} alt={el.username} />
                                 ) : (
@@ -277,7 +279,7 @@ function PostCard({ post, check, refreshPosts }) {
                                 <Link 
                                     style={{ all: 'unset', cursor: 'pointer', width: '50%' }} 
                                     to={`/profile/${el.username}`} 
-                                    state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio }}
+                                    state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio, friendInvitation: el.friendInvitation, friends: el.friends }}
                                     onClick={() => dispatch(clearPosters())}
                                 >
                                     <div>
@@ -313,7 +315,7 @@ function PostCard({ post, check, refreshPosts }) {
                             <Link 
                                 style={{ all: 'unset', cursor: 'pointer' }} 
                                 to={`/profile/${el.username}`} 
-                                state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio }}
+                                state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio, friendInvitation: el.friendInvitation, friends: el.friends }}
                                 onClick={() => dispatch(clearPosters())}
                             >
                                 {el.profileImageUrl ? (

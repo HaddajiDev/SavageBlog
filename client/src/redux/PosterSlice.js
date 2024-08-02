@@ -11,7 +11,7 @@ export const PublishPoster = createAsyncThunk('poster/publish', async (poster) =
   }
 });
 
-// Get all posters
+// Get all posters //get(`https://savage-blog-back.vercel.app/post/?page=${page}`);
 export const GetAllposters = createAsyncThunk('poster/all', async (page = 1, { rejectWithValue }) => {
   try {
     const response = await axios.get(`https://savage-blog-back.vercel.app/post/?page=${page}`);
@@ -42,7 +42,7 @@ export const DislikePost = createAsyncThunk('poster/dislike', async ({ id, userI
   }
 });
 
-// Get comments for a post
+// Get comments for a post //axios.get(`https://savage-blog-back.vercel.app/post/${id}/comments/`);
 export const GetComments = createAsyncThunk('poster/comment', async (id) => {
   try {
     const result = await axios.get(`https://savage-blog-back.vercel.app/post/${id}/comments/`);
@@ -52,6 +52,7 @@ export const GetComments = createAsyncThunk('poster/comment', async (id) => {
   }
 });
 
+//axios.get(`https://savage-blog-back.vercel.app/post/${id}/`);
 export const GetPoster = createAsyncThunk('poster/one', async (id) => {
   try {
     const result = await axios.get(`https://savage-blog-back.vercel.app/post/${id}/`);

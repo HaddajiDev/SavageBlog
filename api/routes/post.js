@@ -5,25 +5,33 @@ const User = require('../models/users');
 const Comment = require('../models/comment');
 
 //get all
+// Get all posts with pagination
 router.get('/', async (req, res) => {
   const { page = 1, limit = 10 } = req.query;
 
-  try {    
+  try {
     const posts = await Post.find()
       .sort({ createdAt: -1 })
       .skip((page - 1) * limit)
-      .limit(Number(limit));  
+      .limit(Number(limit));
+
     const postsWithUser = await Promise.all(posts.map(async (post) => {
       const author = await User.findById(post.author);
+      if (!author) {
+        
+        return null;
+      }
       return {
         title: post.title,
         body: post.body,
         author: {
           username: author.username,
-          profileImageUrl: author.profileImageUrl,          
+          profileImageUrl: author.profileImageUrl,
           posts: author.posts,
           bio: author.bio,
-          _id: author._id
+          friendInvitation: author.friendInvitation,
+          friends: author.friends,
+          _id: author._id,
         },
         comments: post.comments,
         category: post.category,
@@ -37,7 +45,10 @@ router.get('/', async (req, res) => {
       };
     }));
 
-    res.status(200).send({ posts: postsWithUser });
+    
+    const filteredPosts = postsWithUser.filter(post => post !== null);
+
+    res.status(200).send({ posts: filteredPosts });
   } catch (err) {
     console.error('Error fetching posts:', err);
     res.status(500).send({ message: 'Server error' });
@@ -45,17 +56,45 @@ router.get('/', async (req, res) => {
 });
 
 
-
-//get by id
-router.get('/:id', async(req, res) => {
-  const { postid } = req.params.id;
+// Get post by ID
+router.get('/:id', async (req, res) => {
+  const { id } = req.params; // Corrected parameter extraction
   try {
-    const poster = await Post.findById(postid);
-    res.send({post : poster});
+    const post = await Post.findById(id);
+    if (!post) {
+      return res.status(404).send({ message: 'Post not found' });
+    }
+    const author = await User.findById(post.author);
+    const postWithUser = {
+      title: post.title,
+      body: post.body,
+      author: {
+        username: author.username,
+        profileImageUrl: author.profileImageUrl,
+        posts: author.posts,
+        bio: author.bio,
+        friendInvitation: author.friendInvitation,
+        friends: author.friends,
+        _id: author._id,        
+      },
+      comments: post.comments,
+      category: post.category,
+      tags: post.tags,
+      imageUrl: post.imageUrl,
+      createdAt: post.createdAt,
+      updatedAt: post.updatedAt,      
+      likes: post.Likes.length,
+      dislikes: post.DisLikes.length,
+      _id: post._id,
+    };
+
+    res.status(200).send({ post: postWithUser });
   } catch (error) {
-    res.send({error : error});
-  }  
+    console.error('Error fetching post:', error);
+    res.status(500).send({ message: 'Server error' });
+  }
 });
+
 
 
 //add post
@@ -220,7 +259,10 @@ router.get('/:postId/comments', async (req, res) => {
           username: author.username,
           profileImageUrl: author.profileImageUrl,
           createdAt: comment.createdAt,
-          _id: comment._id,          
+          friendInvitation: author.friendInvitation,
+          friends: author.friends,
+          _id: comment._id,     
+               
         };
       } else {
         return {
