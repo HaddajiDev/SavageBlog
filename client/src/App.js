@@ -20,6 +20,7 @@ import DashBoard from './components/DashBoard';
 
 import AdminPrivateRoute from './components/AdminPrivateRoute';
 import FriendRequestsPage from './components/FriendRequestsPage';
+import FriendsList from './components/FriendsList';
 
 function App() {
   const isAuth = localStorage.getItem("token");
@@ -45,6 +46,7 @@ function App() {
           <Route path='/profile/:id' element={<UserPage />}/>
           <Route path='/updatePost' element={<UpdatedPoster />}/>
           <Route path='/invitation' element={<FriendRequestsPage />} />
+          <Route path='/friends/:id' element={<FriendsList />}/>
         </Route>
         <Route element={<ValiditionPrivateRoute state="login" />}>
           <Route path='/login' element={<Login />} />

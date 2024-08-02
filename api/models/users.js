@@ -63,12 +63,18 @@ const userSchema = new mongoose.Schema({
       bio: {type: String},
       friendInvitation: {type: Array},
       friends: {type: Array},
+      date: {type: Date, default: Date.now},
       read: {type: Boolean, default: false}
     }
   ],
   friends: [
     {
       freindId: {type: mongoose.Schema.Types.ObjectId, ref: 'user'},
+      imageUrl: {type: String},
+      username: {type:String},      
+      bio: {type: String},
+      friendInvitation: {type: Array},
+      friends: {type: Array},
       room: {type: Number, unique: true, }
     }
   ]

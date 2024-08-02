@@ -4,6 +4,7 @@ import { GetUserPosts, UpdateUser } from '../redux/UserSlice';
 import PostCard from './PostCard';
 import axios from 'axios';
 import Swal from 'sweetalert2';
+import { Link } from 'react-router-dom';
 
 function Profile() {
   const currentuser = useSelector((state) => state.user.user);
@@ -204,7 +205,11 @@ function Profile() {
           </button>
         </div>
         <p style={{textAlign: 'center', padding: '10px'}}>{currentuser?.bio}</p>
+        <Link style={{all: 'unset'}} to={`/friends/${currentuser.username}`} state={currentuser}>
+          <button style={{display: 'flex', justifyContent: 'center'}} className='buttonPage'>Veiw All Freinds</button>
+        </Link>
       </div>
+      
 
       <div className="posts-list">
         {posts.length > 0 ? (

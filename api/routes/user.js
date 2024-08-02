@@ -314,12 +314,32 @@ router.delete('/:id', async (req, res) => {
       await friend.save();
       return res.status(200).send({ message: 'Invitation removed (already friends)' });
     }
+
   
-      friend.friends.push({freindId: userId });
-      user.friends.push({ freindId: friendId });
+      friend.friends.push(
+        {
+          freindId: userId,
+          imageUrl: user.profileImageUrl, 
+          username: user.username, 
+          bio: user.bio, 
+          friendInvitation: user.friendInvitation,
+          friends: user.friends          
+        }
+      );
+      user.friends.push(
+        {
+          freindId: friendId,
+          imageUrl: friend.profileImageUrl, 
+          username: friend.username, 
+          bio: friend.bio, 
+          friendInvitation: friend.friendInvitation,
+          friends: friend.friends
+        }
+      );
 
       user.friendInvitation = user.friendInvitation.filter(invite => invite.userId.toString() !== friendId);
       friend.friendInvitation = friend.friendInvitation.filter(invite => invite.userId.toString() !== userId);
+
 
 
       await user.save();
