@@ -82,8 +82,8 @@ function UserPage() {
     await dispatch(RejectFriendRequest({ userId: currentUser._id, friendId }));
     setPing(!ping);
   };
-  const removeFriendFunc = async(freindId) => {
-    await dispatch(removeFriend({ userId: currentUser._id, freindId}));
+  const removeFriendFunc = async(friendId) => {
+    await dispatch(removeFriend({ userId: currentUser._id, friendId: friendId}));
     setPing(!ping);
   }
 
