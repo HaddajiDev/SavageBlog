@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useLocation } from 'react-router-dom';
 import { clearPosters, GetUserPosts_2 } from '../redux/UserPostsSlice';
 import PostCard from './PostCard';
-import { GetAllInvitation, sendFriendRequset, RejectFriendRequest, AcceptFriendRequset, GetAllFriends } from '../redux/UserSlice';
+import { GetAllInvitation, sendFriendRequset, RejectFriendRequest, AcceptFriendRequset, GetAllFriends, removeFriend } from '../redux/UserSlice';
 
 function UserPage() {
   const location = useLocation();
@@ -11,9 +11,9 @@ function UserPage() {
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.userPoster.posters);
   const status = useSelector((state) => state.userPoster.status);
-  const currentUser = useSelector((state) => state.user.user); // Renamed user to currentUser for clarity
-  const friendInvites = useSelector((state) => state.user.friendInvites) ?? []; // Default to an empty array
-  const friends = useSelector((state) => state.user.friends) ?? []; // Default to an empty array
+  const currentUser = useSelector((state) => state.user.user);
+  const friendInvites = useSelector((state) => state.user.friendInvites) ?? [];
+  const friends = useSelector((state) => state.user.friends) ?? [];
 
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
@@ -59,24 +59,33 @@ function UserPage() {
     window.scrollTo(0, 0);
   }, []);
 
+  const [ping, setPing] = useState(false);
+
   useEffect(() => {
     if (currentUser && currentUser._id) {
       dispatch(GetAllInvitation(currentUser._id));
       dispatch(GetAllFriends(currentUser._id));
     }
-  }, [dispatch, currentUser]);
+  }, [ping, dispatch, currentUser]);
 
-  const sentInviteFunc = () => {
-    dispatch(sendFriendRequset({ userId: currentUser._id, friendId: viewedUser?._id }));
+  const sentInviteFunc = async() => {
+    await dispatch(sendFriendRequset({ userId: currentUser._id, friendId: viewedUser?._id }));
+    setPing(!ping);
   };
 
-  const acceptRequest = (friendId) => {
-    dispatch(AcceptFriendRequset({ userId: currentUser._id, friendId }));
+  const acceptRequest = async(friendId) => {
+    await dispatch(AcceptFriendRequset({ userId: currentUser._id, friendId }));
+    setPing(!ping);
   };
 
-  const declineRequest = (friendId) => {
-    dispatch(RejectFriendRequest({ userId: currentUser._id, friendId }));
+  const declineRequest = async(friendId) => {
+    await dispatch(RejectFriendRequest({ userId: currentUser._id, friendId }));
+    setPing(!ping);
   };
+  const removeFriendFunc = async(freindId) => {
+    await dispatch(removeFriend({ userId: currentUser._id, freindId}));
+    setPing(!ping);
+  }
 
   const checkInvitationStatus = () => {
     const sentInvite = viewedUser.friendInvitation.some(invite => invite.userId === currentUser._id);    
@@ -84,7 +93,12 @@ function UserPage() {
     const isFriend = currentUser.friends.some(friend => friend.freindId === viewedUser._id);
   
     if (isFriend) {
-      return <button className='buttonPage' disabled>Friends</button>;
+      return(
+        <div style={{display: 'flex', gap: '10px'}}>
+         <button className='buttonPage' disabled>Friends</button>
+         <button className='buttonPage decline' onClick={() => removeFriendFunc(viewedUser._id)}>Remove</button>
+        </div>
+         );
     } else if (receivedInvite) {
       return (
         <div style={{display: 'flex', gap: '10px'}}>

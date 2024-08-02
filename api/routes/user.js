@@ -384,11 +384,11 @@ router.delete('/:id', async (req, res) => {
       const friendIdStr = friendId.toString();
   
       const initialUserFriendsCount = user.friends.length;
-      user.friends = user.friends.filter(f => f.friendId && f.friendId.toString() !== friendIdStr);
+      user.friends = user.friends.filter(f => f.freindId && f.freindId.toString() !== friendIdStr);
       const finalUserFriendsCount = user.friends.length;
   
       const initialFriendFriendsCount = friend.friends.length;
-      friend.friends = friend.friends.filter(f => f.friendId && f.friendId.toString() !== userIdStr);
+      friend.friends = friend.friends.filter(f => f.freindId && f.freindId.toString() !== userIdStr);
       const finalFriendFriendsCount = friend.friends.length;
   
       if (initialUserFriendsCount === finalUserFriendsCount && initialFriendFriendsCount === finalFriendFriendsCount) {        

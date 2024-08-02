@@ -266,7 +266,7 @@ function PostCard({ post, check, refreshPosts }) {
                                 state={{ _id: el.authorId, profileImageUrl: el.profileImageUrl, username: el.username, bio: el.bio, friendInvitation: el.friendInvitation, friends: el.friends }}
                                 onClick={() => dispatch(clearPosters())}
                             >
-                                {console.log(el)}
+                                
                                 {el.profileImageUrl ? (
                                     <img src={el.profileImageUrl} alt={el.username} />
                                 ) : (
