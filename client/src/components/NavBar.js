@@ -79,11 +79,16 @@ function Navbar() {
                                                         const [username, ...msgParts] = notification.msg.split(' ');
                                                         const msg = msgParts.join(' ');
                                                         const profileImageUrl = notification.profileImageUrl || generateAvatarUrl(username);
+                                                        
                                                         return (
-                                                            <div key={index} className="notification-item" onClick={() => handleNotificationClick(notification)}>
-                                                                <img src={profileImageUrl} alt="avatar" style={{ width: '35px', borderRadius: '50%', marginRight: '10px' }} />
-                                                                <strong>{username}</strong> {msg}
-                                                            </div>
+                                                            <Link style={{all: 'unset', cursor: 'pointer'}}
+                                                                to={`/post/${notification.post._id}`} state={notification.post}
+                                                            >
+                                                                <div key={index} className="notification-item" onClick={() => handleNotificationClick(notification)}>
+                                                                    <img src={profileImageUrl} alt="avatar" style={{ width: '35px', borderRadius: '50%', marginRight: '10px' }} />
+                                                                    <strong>{username}</strong> {msg}
+                                                                </div>
+                                                            </Link>
                                                         );
                                                     })}
                                                 </div>

@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { AcceptFriendRequset, GetAllInvitation, GetAllInvitationRead, RejectFriendRequest } from '../redux/UserSlice';
 import { Link } from 'react-router-dom';
 import { timeFromNow } from './PostCard';
+import Swal from 'sweetalert2';
+
 
 function FriendRequestsPage() {
   const user = useSelector((state) => state.user.user);
@@ -16,16 +18,24 @@ function FriendRequestsPage() {
       dispatch(GetAllInvitation(user._id));
       dispatch(GetAllInvitationRead(user._id));
     }
-  }, [ping, user]);
+  }, [ping]);
 
-  const acceptRequest = (friendId) => {
-    dispatch(AcceptFriendRequset({ userId: user._id, friendId }));
-	setPing(!ping);
+  const [loadingAccept, setLoadingAccept] = useState(false);
+  const acceptRequest = async(friendId) => {
+    setLoadingAccept(true);
+    await dispatch(AcceptFriendRequset({ userId: user._id, friendId }));
+	  setPing(!ping);
+    setLoadingAccept(false);
+    Alert("Requset Accpted", 'success');
   };
 
-  const declineRequest = (friendId) => {
-    dispatch(RejectFriendRequest({ userId: user._id, friendId }));
-	setPing(!ping);
+  const [loadingDecline, setLoadingDecline] = useState(false);
+  const declineRequest = async(friendId) => {
+    setLoadingDecline(true);
+    await dispatch(RejectFriendRequest({ userId: user._id, friendId }));
+	  setPing(!ping);
+    setLoadingDecline(false);
+    Alert("Requset Declined", 'success');
   };
 
   const generateAvatarUrl = (username) => {
@@ -51,8 +61,10 @@ function FriendRequestsPage() {
                 <p>{el.bio}</p>
               </Link>
               <div className="friend-invite-buttons">
-                <button className="accept-button" onClick={() => acceptRequest(el.userId)}>Accept</button>
-                <button className="decline-button" onClick={() => declineRequest(el.userId)}>Decline</button>
+                <button className="accept-button" onClick={() => acceptRequest(el.userId)}>{loadingAccept ?
+                <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-lg"></i> : 'Accept'}</button>
+                <button className="decline-button" onClick={() => declineRequest(el.userId)}>{loadingDecline ?
+                <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-lg"></i> : 'Decline'}</button>
               </div>              
             </div>
           )) : (
@@ -62,6 +74,29 @@ function FriendRequestsPage() {
       </div>
     </div>
   );
+}
+
+
+export function Alert(text, type) {
+	const Toast = Swal.mixin({
+		toast: true,
+		position: 'top-end',
+		iconColor: 'white',
+		customClass: {
+			popup: 'colored-toast',
+		},
+		showCancelButton: false,
+		showConfirmButton: false,
+		showDenyButton: false,
+		timer: 1500,
+		timerProgressBar: true,
+	  })		  
+	  ;(async () => {
+		await Toast.fire({
+		  icon: type,
+		  title: text,
+		})  
+	})()
 }
 
 export default FriendRequestsPage;

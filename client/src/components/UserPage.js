@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import { clearPosters, GetUserPosts_2 } from '../redux/UserPostsSlice';
 import PostCard from './PostCard';
 import { GetAllInvitation, sendFriendRequset, RejectFriendRequest, AcceptFriendRequset, GetAllFriends, removeFriend } from '../redux/UserSlice';
+import { Alert } from './FriendRequestsPage';
 
 function UserPage() {
   const location = useLocation();
@@ -12,6 +13,7 @@ function UserPage() {
   const posts = useSelector((state) => state.userPoster.posters);
   const currentUser = useSelector((state) => state.user.user);
   const friends = useSelector((state) => state.user.friends) ?? [];
+  const friendInvites = useSelector((state) => state.user.friendInvites) ?? [];
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
@@ -62,49 +64,74 @@ function UserPage() {
     }
   }, [ping, dispatch, currentUser]);
 
+  const [loadingInvite, setLoadingInvite] = useState(false);
   const sentInviteFunc = async() => {
+    setLoadingInvite(true);
     await dispatch(sendFriendRequset({ userId: currentUser._id, friendId: viewedUser?._id }));
     setPing(!ping);
+    setLoadingInvite(false);
+    Alert("Friend request sent", "success");
   };
 
+  const [loadingAccept, setLoadingAccept] = useState(false);
   const acceptRequest = async(friendId) => {
+    setLoadingAccept(true);
     await dispatch(AcceptFriendRequset({ userId: currentUser._id, friendId }));
     setPing(!ping);
+    setLoadingAccept(false);
+    Alert("Requset Accpted", 'success');
   };
 
+  const [loadingDecline, setLoadingDecline] = useState(false);
   const declineRequest = async(friendId) => {
+    setLoadingDecline(true);
     await dispatch(RejectFriendRequest({ userId: currentUser._id, friendId }));
     setPing(!ping);
+    setLoadingDecline(false);
+    Alert("Requset Declined", 'success');
   };
 
+  const [LoadingRemove, setLoadingRemove] = useState(false);
   const removeFriendFunc = async() => {
+    setLoadingRemove(true);
     await dispatch(removeFriend({ userId: currentUser._id, friendId: viewedUser?._id }));
+    setLoadingRemove(false);
     setPing(!ping);
+    Alert("Friend Removed", 'success');
   };
 
   const checkInvitationStatus = () => {
     const sentInvite = viewedUser.friendInvitation.some(invite => invite.userId === currentUser._id);
-    const receivedInvite = currentUser.friendInvitation.some(invite => invite.userId === viewedUser._id);
-    const isFriend = currentUser.friends.some(friend => friend.freindId === viewedUser._id);
+    const receivedInvite = friendInvites.some(invite => invite.userId === viewedUser._id);
+    const isFriend = friends.some(friend => friend.freindId === viewedUser._id);
 
     if (isFriend) {
       return (
         <div style={{ display: 'flex', gap: '10px' }}>
           <button className='buttonPage' disabled>Friends</button>
-          <button className='buttonPage decline' onClick={() => removeFriendFunc()}>Remove</button>
+          <button className='buttonPage decline' onClick={() => removeFriendFunc()}>{LoadingRemove ?
+           <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-lg"></i> : 'Remove'}</button>
         </div>
       );
     } else if (receivedInvite) {
       return (
         <div style={{ display: 'flex', gap: '10px' }}>
-          <button className='buttonPage accept' onClick={() => acceptRequest(viewedUser._id)}>Accept</button>
-          <button className='buttonPage decline' onClick={() => declineRequest(viewedUser._id)}>Decline</button>
+          <button className='buttonPage accept' onClick={() => acceptRequest(viewedUser._id)}>{loadingAccept ?
+           <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-lg"></i> : 'Accept'}</button>
+          <button className='buttonPage decline' onClick={() => declineRequest(viewedUser._id)}>{loadingDecline ?
+           <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-lg"></i> : 'Decline'}</button>
         </div>
       );
     } else if (sentInvite) {
       return <button className='buttonPage' disabled>Request Sent</button>;
     } else {
-      return <button className='buttonPage' onClick={sentInviteFunc}>Add Friend</button>;
+      return (
+        <>
+        {<button className='buttonPage' onClick={sentInviteFunc}>{loadingInvite ?
+          <i class="fa fa-spinner fa-pulse fa-2x fa-fw fa-lg"></i> : 'Add Friend'
+          }</button> }
+        </>
+      );
     }
   };
 

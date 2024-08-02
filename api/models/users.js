@@ -39,6 +39,7 @@ const userSchema = new mongoose.Schema({
     {
       msg: {type: String},
       profileImageUrl: {type: String},
+      post : {type: Object},
       read: {type: Boolean, default: false}
     }
   ],

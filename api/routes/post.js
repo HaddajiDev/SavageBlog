@@ -192,7 +192,8 @@ router.post('/:id/like', async (req, res) => {
     }
 
     if(Postuser.username !== LikedUser.username){
-      Postuser.notifications.push({msg: `${LikedUser.username} Liked your post`, profileImageUrl: LikedUser.profileImageUrl});
+      const poster = await Post.findById(postId)
+      Postuser.notifications.push({msg: `${LikedUser.username} Liked your post`, profileImageUrl: LikedUser.profileImageUrl, post: poster});
     }
     
     

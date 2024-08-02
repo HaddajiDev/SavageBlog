@@ -25,7 +25,8 @@ router.post('/:postId/comments', async (req, res) => {
       const user = await User.findById(author);
 
       if(PostAuthor.username !== user.username){
-        PostAuthor.notifications.push({msg: `${user.username} commented in your post`, profileImageUrl: user.profileImageUrl});
+        const poster = await Post.findById(postId);
+        PostAuthor.notifications.push({msg: `${user.username} commented in your post`, profileImageUrl: user.profileImageUrl, post: poster});
         await PostAuthor.save();
       }
 
