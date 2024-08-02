@@ -910,3 +910,84 @@
 .buttonPage.decline {
   background-color: #E74C3C; /* red */
 }
+
+
+
+
+
+.invites-container{
+  display: flex;  
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
+.friend-invites-container {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  max-width: 300px;
+}
+
+.friend-invite {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+  
+}
+
+.friend-invite img {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-bottom: 10px;
+}
+
+.friend-invite h1 {
+  font-size: 18px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.friend-invite p {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.friend-invite-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+}
+
+.accept-button, .decline-button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.accept-button {
+  background-color: #4CAF50;
+  color: #fff;
+}
+
+.decline-button {
+  background-color: #f44336;
+  color: #fff;
+}
+
+.no-requests {
+  text-align: center;
+  padding: 20px;
+  font-size: 18px;
+  color: #666;
+  
+}

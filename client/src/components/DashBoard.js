@@ -47,6 +47,7 @@ function DashBoard() {
                                 <tbody>
                                     {users?.filter((el) => el.username.toLowerCase().includes(searchValue.toLowerCase())).map((el) => (
                                         <tr key={el._id}>
+                                            {console.log(el)}
                                             <td>{el.username}</td>
                                             <td>{el.email}</td>
                                             <td>                                                

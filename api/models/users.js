@@ -61,6 +61,8 @@ const userSchema = new mongoose.Schema({
       username: {type:String},
       body: {type: String},
       bio: {type: String},
+      friendInvitation: {type: Array},
+      friends: {type: Array},
       read: {type: Boolean, default: false}
     }
   ],

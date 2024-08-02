@@ -133,15 +133,18 @@ export const RejectFriendRequest = createAsyncThunk('user/RejectInvite', async (
 	  throw error;
 	}
   });
-
-export const removeFriend = createAsyncThunk('user/removeFriend', async({userId, friendId}) => {
+  
+  export const removeFriend = createAsyncThunk('user/removeFriend', async ({ userId, friendId }, { rejectWithValue }) => {
 	try {
-		const response = await axios.delete(`https://savage-blog-back.vercel.app/user/friend/removeFriend`, {userId, friendId});
-		return response.data;
+	  const response = await axios.delete('https://savage-blog-back.vercel.app/user/friend/removeFriend', {
+		data: { userId, friendId }
+	  });
+	  return response.data;
 	} catch (error) {
-		
+	  console.error('Failed to remove friend:', error);
+	  return rejectWithValue(error.response.data);
 	}
-});
+  });
 
 
 export const GetAllFriends = createAsyncThunk('user/allFriends', async(id) => {
@@ -348,6 +351,17 @@ export const UserSlice = createSlice({
 		state.friendInvites = action.payload.invitations;
 	})
 	.addCase(GetAllInvitation.rejected, (state) => {
+		state.status = "failed";
+	})
+
+	.addCase(removeFriend.pending, (state) => {
+		state.status = "pending";
+	})
+	.addCase(removeFriend.fulfilled, (state, action) => {
+		state.status = "success";
+		state.friends = action.payload?.friends;
+	})
+	.addCase(removeFriend.rejected, (state) => {
 		state.status = "failed";
 	})
 	

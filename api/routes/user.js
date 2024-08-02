@@ -278,7 +278,9 @@ router.delete('/:id', async (req, res) => {
       const bio = friend.bio;
       const body = username + " sent you an invitation";
       const imageUrl = friend.profileImageUrl;
-      user.friendInvitation.push({ userId, imageUrl, username, body, bio});
+      const friendInvitation = friend.friendInvitation;
+      const Freinds = friend.friends;
+      user.friendInvitation.push({ userId, imageUrl, username, body, bio, friendInvitation, Freinds});
       
       await user.save();
   

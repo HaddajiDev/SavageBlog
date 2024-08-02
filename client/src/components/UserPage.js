@@ -7,17 +7,15 @@ import { GetAllInvitation, sendFriendRequset, RejectFriendRequest, AcceptFriendR
 
 function UserPage() {
   const location = useLocation();
-  const { state: viewedUser } = location; // Renamed state to viewedUser for clarity
+  const { state: viewedUser } = location;
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.userPoster.posters);
-  const status = useSelector((state) => state.userPoster.status);
   const currentUser = useSelector((state) => state.user.user);
-  const friendInvites = useSelector((state) => state.user.friendInvites) ?? [];
   const friends = useSelector((state) => state.user.friends) ?? [];
-
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(false);
   const [hasMore, setHasMore] = useState(true);
+  const [ping, setPing] = useState(false);
 
   useEffect(() => {
     dispatch(clearPosters());
@@ -30,9 +28,7 @@ function UserPage() {
         try {
           const result = await dispatch(GetUserPosts_2({ id: viewedUser._id, page }));
           const fetchedPosts = result.payload;
-          if (fetchedPosts.length === 0) {
-            setHasMore(false);
-          } else if (fetchedPosts.length < 10) {
+          if (fetchedPosts.length === 0 || fetchedPosts.length < 10) {
             setHasMore(false);
           }
         } catch (error) {
@@ -59,8 +55,6 @@ function UserPage() {
     window.scrollTo(0, 0);
   }, []);
 
-  const [ping, setPing] = useState(false);
-
   useEffect(() => {
     if (currentUser && currentUser._id) {
       dispatch(GetAllInvitation(currentUser._id));
@@ -82,26 +76,27 @@ function UserPage() {
     await dispatch(RejectFriendRequest({ userId: currentUser._id, friendId }));
     setPing(!ping);
   };
-  const removeFriendFunc = async(friendId) => {
-    await dispatch(removeFriend({ userId: currentUser._id, friendId: friendId}));
+
+  const removeFriendFunc = async() => {
+    await dispatch(removeFriend({ userId: currentUser._id, friendId: viewedUser?._id }));
     setPing(!ping);
-  }
+  };
 
   const checkInvitationStatus = () => {
-    const sentInvite = viewedUser.friendInvitation.some(invite => invite.userId === currentUser._id);    
-    const receivedInvite = currentUser.friendInvitation.some(invite => invite.userId === viewedUser._id);    
+    const sentInvite = viewedUser.friendInvitation.some(invite => invite.userId === currentUser._id);
+    const receivedInvite = currentUser.friendInvitation.some(invite => invite.userId === viewedUser._id);
     const isFriend = currentUser.friends.some(friend => friend.freindId === viewedUser._id);
-  
+
     if (isFriend) {
-      return(
-        <div style={{display: 'flex', gap: '10px'}}>
-         <button className='buttonPage' disabled>Friends</button>
-         <button className='buttonPage decline' onClick={() => removeFriendFunc(viewedUser._id)}>Remove</button>
+      return (
+        <div style={{ display: 'flex', gap: '10px' }}>
+          <button className='buttonPage' disabled>Friends</button>
+          <button className='buttonPage decline' onClick={() => removeFriendFunc()}>Remove</button>
         </div>
-         );
+      );
     } else if (receivedInvite) {
       return (
-        <div style={{display: 'flex', gap: '10px'}}>
+        <div style={{ display: 'flex', gap: '10px' }}>
           <button className='buttonPage accept' onClick={() => acceptRequest(viewedUser._id)}>Accept</button>
           <button className='buttonPage decline' onClick={() => declineRequest(viewedUser._id)}>Decline</button>
         </div>
@@ -112,7 +107,6 @@ function UserPage() {
       return <button className='buttonPage' onClick={sentInviteFunc}>Add Friend</button>;
     }
   };
-  
 
   return (
     <div className="user-profile">
