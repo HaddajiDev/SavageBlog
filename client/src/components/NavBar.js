@@ -81,6 +81,8 @@ function Navbar() {
                                                         const profileImageUrl = notification.profileImageUrl || generateAvatarUrl(username);
                                                         
                                                         return (
+                                                            <>
+                                                            {notification.post ? 
                                                             <Link style={{all: 'unset', cursor: 'pointer'}}
                                                                 to={`/post/${notification.post._id}`} state={notification.post}
                                                             >
@@ -89,6 +91,13 @@ function Navbar() {
                                                                     <strong>{username}</strong> {msg}
                                                                 </div>
                                                             </Link>
+                                                            : <>
+                                                                <div key={index} className="notification-item" onClick={() => handleNotificationClick(notification)}>
+                                                                    <img src={profileImageUrl} alt="avatar" style={{ width: '35px', borderRadius: '50%', marginRight: '10px' }} />
+                                                                    <strong>{username}</strong> {msg}
+                                                                </div>
+                                                                </>}
+                                                            </>
                                                         );
                                                     }): <>No notifications</>}
                                                 </div>

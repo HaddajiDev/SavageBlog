@@ -340,7 +340,11 @@ router.delete('/:id', async (req, res) => {
       user.friendInvitation = user.friendInvitation.filter(invite => invite.userId.toString() !== friendId);
       friend.friendInvitation = friend.friendInvitation.filter(invite => invite.userId.toString() !== userId);
 
-
+      friend.notifications.push({
+        msg: `${user.username} accepted your friend requset`,
+        profileImageUrl : user.profileImageUrl,
+        post : {},        
+      })
 
       await user.save();
       await friend.save();
