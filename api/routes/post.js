@@ -193,9 +193,9 @@ router.post('/:id/like', async (req, res) => {
 
     if(Postuser.username !== LikedUser.username){
       const poster = await Post.findById(postId);
-      const PosterUser = await User.findById(poster.author);
+      const PosterUser = await User.findById(poster.author);      
       Postuser.notifications.push({msg: `${LikedUser.username} Liked your post`, profileImageUrl: LikedUser.profileImageUrl,
-         post: {...poster, ...PosterUser}});
+         post: {...poster, author: PosterUser}});
     }
     
     
