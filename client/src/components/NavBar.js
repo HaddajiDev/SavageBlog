@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
-import { GetUserNotifications, logout, userLogin, GetUserNotificationsRead, GetAllInvitation } from '../redux/UserSlice';
+import { GetUserNotifications, logout, userLogin, GetUserNotificationsRead, GetAllInvitation, generateToken } from '../redux/UserSlice';
 import logo from '../logo_2.png';
+import axios from 'axios';
 
 
 function Navbar() {
@@ -53,6 +54,18 @@ function Navbar() {
     const unreadCount = notifications?.filter(notification => !notification.read).length;
 
     const unreadInvititaion = friendInvites?.filter(invite => !invite.read).length;
+
+    const token = useSelector(state => state.user.token);
+
+	const handleRedirect = () => {
+		dispatch(generateToken({ email: user?.email }));
+	};
+	
+	useEffect(() => {
+		if (token) {
+			window.location.href = `https://savage-talk-back.onrender.com/user/auth?token=${token}`;
+		}
+	}, [token]);
     
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{width: "100%"}}>
@@ -64,11 +77,14 @@ function Navbar() {
                             <ul className="navbar-nav ms-auto">
                                 <li className="nav-item">
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
+                                        <div style={{display: 'none'}}>
+                                            <button onClick={handleRedirect}>button</button>
+                                        </div>
                                         {user.isAdmin ? <Link to='/dashboard' style={{all: 'unset', cursor: 'pointer'}}><i class="fa-solid fa-gauge-high fa-lg"></i></Link> : <></>}
                                         <div className="notification-container">
                                             <i className="fa-solid fa-user-group fa-lg" style={{cursor: 'pointer'}} onClick={inviteRoute}></i>
                                             {unreadInvititaion > 0 && <span className="notification-badge">{unreadInvititaion}</span>}
-                                        </div>
+                                        </div>                                        
                                         
                                         <div className="notification-container">                                            
                                             <i className="fa-solid fa-bell fa-lg" style={{cursor: 'pointer'}} onClick={toggleDropdown}></i>

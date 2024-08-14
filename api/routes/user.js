@@ -5,6 +5,8 @@ const Post = require('../models/post');
 const bcrypt = require('bcrypt');
 const Comment = require('../models/comment');
 
+const Messages = require('../models/messages');
+
 var jwt = require('jsonwebtoken');
 
 const {loginRules, registerRules, validation, UpdateRules} = require('../middleware/validator');
@@ -97,6 +99,26 @@ router.post('/login', loginRules(), validation, async (request, result) => {
         result.status(500).send({error: "Login Failed"});
     }
 });
+
+router.post('/generate-token', async (req, res) => {
+  const { email } = req.body;
+
+  try {
+      const user = await User.findOne({ email });
+      if (!user) {
+          return res.status(404).send({ error: 'User not found' });
+      }
+
+      const payload = { _id: user._id };
+      const token = jwt.sign(payload, process.env.SCTY_KEY, { expiresIn: '7d' });
+
+      res.status(200).send({ token });
+  } catch (error) {
+      res.status(500).send({ error: 'Internal server error' });
+  }
+});
+
+
 
 router.get('/current', isAuth(), (request, result) => {
     result.status(200).send({user: request.user});
@@ -405,6 +427,14 @@ router.delete('/:id', async (req, res) => {
       if (!friend) {        
         return res.status(404).send({ message: 'Friend not found' });
       }
+        const userFriend = user.friends.find(f => f.freindId.toString() === friendId.toString());
+      if (!userFriend || !userFriend.room) {
+        return res.status(404).send({ message: 'No room found for this friend relationship' });
+      }
+
+      const roomNumber = userFriend.room;      
+      await Messages.deleteMany({ room: roomNumber });
+
 
       const userIdStr = userId.toString();
       const friendIdStr = friendId.toString();
@@ -416,6 +446,8 @@ router.delete('/:id', async (req, res) => {
       const initialFriendFriendsCount = friend.friends.length;
       friend.friends = friend.friends.filter(f => f.freindId && f.freindId.toString() !== userIdStr);
       const finalFriendFriendsCount = friend.friends.length;
+
+      
   
       if (initialUserFriendsCount === finalUserFriendsCount && initialFriendFriendsCount === finalFriendFriendsCount) {        
         return res.status(404).send({ message: 'No friend relationship found with the provided friendId' });

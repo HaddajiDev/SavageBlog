@@ -175,6 +175,18 @@ export const GetAllInvitationRead = createAsyncThunk('user/InvitionRead', async(
 	}
 })
 
+
+export const generateToken = createAsyncThunk('user/tokenGenerate', async ({ email }, { rejectWithValue }) => {
+	try {
+		const response = await axios.post('http://localhost:3000/api/generate-token', { email });
+		return response.data;	
+		
+	} catch (error) {
+		return rejectWithValue(error.response.data);
+	}
+});
+
+
 const initialState = {
   	user: null,
 	status: null,
@@ -184,6 +196,7 @@ const initialState = {
 	error: null,
 	friends: null,
 	friendInvites: null,
+	token: null
 }
 
 export const UserSlice = createSlice({
@@ -373,6 +386,17 @@ export const UserSlice = createSlice({
 		state.friends = action.payload?.friends;
 	})
 	.addCase(removeFriend.rejected, (state) => {
+		state.status = "failed";
+	})
+
+	.addCase(generateToken.pending, (state) => {
+		state.status = "pending";
+	})
+	.addCase(generateToken.fulfilled, (state, action) => {
+		state.status = "success";
+		state.token = action.payload?.token;
+	})
+	.addCase(generateToken.rejected, (state) => {
 		state.status = "failed";
 	})
 	
