@@ -178,7 +178,7 @@ export const GetAllInvitationRead = createAsyncThunk('user/InvitionRead', async(
 
 export const generateToken = createAsyncThunk('user/tokenGenerate', async ({ email }, { rejectWithValue }) => {
 	try {
-		const response = await axios.post('http://localhost:3000/api/generate-token', { email });
+		const response = await axios.post('https://savage-blog-back.vercel.app/api/generate-token', { email });
 		return response.data;	
 		
 	} catch (error) {

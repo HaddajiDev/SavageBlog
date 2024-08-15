@@ -109,6 +109,7 @@ router.post('/generate-token', async (req, res) => {
           return res.status(404).send({ error: 'User not found' });
       }
 
+      // Generate token
       const payload = { _id: user._id };
       const token = jwt.sign(payload, process.env.SCTY_KEY, { expiresIn: '7d' });
 
