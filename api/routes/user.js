@@ -100,24 +100,7 @@ router.post('/login', loginRules(), validation, async (request, result) => {
     }
 });
 
-router.post('/generate-token', async (req, res) => {
-  const { email } = req.body;
 
-  try {
-      const user = await User.findOne({ email });
-      if (!user) {
-          return res.status(404).send({ error: 'User not found' });
-      }
-
-      // Generate token
-      const payload = { _id: user._id };
-      const token = jwt.sign(payload, process.env.SCTY_KEY, { expiresIn: '7d' });
-
-      res.status(200).send({ token });
-  } catch (error) {
-      res.status(500).send({ error: 'Internal server error' });
-  }
-});
 
 
 

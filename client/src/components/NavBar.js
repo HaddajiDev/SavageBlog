@@ -55,17 +55,6 @@ function Navbar() {
 
     const unreadInvititaion = friendInvites?.filter(invite => !invite.read).length;
 
-    const token = useSelector((state) => state.user.token);  // Get token from Redux store
-
-    const handleRedirect = () => {
-        dispatch(generateToken({ email: user?.email }));
-    };
-
-    useEffect(() => {
-        if (token) {
-            window.location.href = `https://savage-talk-back.onrender.com/user/auth?token=${token}`;
-        }
-    }, [token]);
     
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{width: "100%"}}>
@@ -77,9 +66,6 @@ function Navbar() {
                             <ul className="navbar-nav ms-auto">
                                 <li className="nav-item">
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
-                                        <div style={{display: 'block'}}>
-                                            <button style={{all: 'unset', cursor: 'pointer'}} onClick={handleRedirect}><i class="fa-solid fa-comments fa-lg"></i></button>
-                                        </div>
                                         {user.isAdmin ? <Link to='/dashboard' style={{all: 'unset', cursor: 'pointer'}}><i class="fa-solid fa-gauge-high fa-lg"></i></Link> : <></>}
                                         <div className="notification-container">
                                             <i className="fa-solid fa-user-group fa-lg" style={{cursor: 'pointer'}} onClick={inviteRoute}></i>
