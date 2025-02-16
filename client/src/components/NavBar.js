@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, redirect, useNavigate } from 'react-router-dom';
 import { GetUserNotifications, logout, userLogin, GetUserNotificationsRead, GetAllInvitation, generateToken } from '../redux/UserSlice';
 import logo from '../logo_2.png';
 import axios from 'axios';
@@ -55,6 +55,10 @@ function Navbar() {
 
     const unreadInvititaion = friendInvites?.filter(invite => !invite.read).length;
 
+    const handleRedirect = () => {
+        window.location.href = `https://savage-talk.vercel.app/verify?token=${localStorage.getItem("token").split(" ")[1]}`;
+    }
+
     
     return (
         <nav className="navbar navbar-expand-lg navbar-light bg-light" style={{width: "100%"}}>
@@ -66,6 +70,9 @@ function Navbar() {
                             <ul className="navbar-nav ms-auto">
                                 <li className="nav-item">
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
+                                        {/* <div style={{display: 'block'}}>
+                                            <button style={{all: 'unset', cursor: 'pointer'}} onClick={() => handleRedirect()}><i class="fa-solid fa-comments fa-lg"></i></button>
+                                        </div> */}
                                         {user.isAdmin ? <Link to='/dashboard' style={{all: 'unset', cursor: 'pointer'}}><i class="fa-solid fa-gauge-high fa-lg"></i></Link> : <></>}
                                         <div className="notification-container">
                                             <i className="fa-solid fa-user-group fa-lg" style={{cursor: 'pointer'}} onClick={inviteRoute}></i>
