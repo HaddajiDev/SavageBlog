@@ -56,7 +56,8 @@ function Navbar() {
     const unreadInvititaion = friendInvites?.filter(invite => !invite.read).length;
 
     const handleRedirect = () => {
-        window.location.href = `https://savage-talk.vercel.app/verify?token=${localStorage.getItem("token").split(" ")[1]}`;
+        // window.location.href = `https://savage-talk.vercel.app/verify?token=${localStorage.getItem("token").split(" ")[1]}`;
+        window.location.href = `https://savage-talk.vercel.app`;
     }
 
     
@@ -70,9 +71,9 @@ function Navbar() {
                             <ul className="navbar-nav ms-auto">
                                 <li className="nav-item">
                                     <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '20px' }}>
-                                        {/* <div style={{display: 'block'}}>
+                                        <div style={{display: 'block'}}>
                                             <button style={{all: 'unset', cursor: 'pointer'}} onClick={() => handleRedirect()}><i class="fa-solid fa-comments fa-lg"></i></button>
-                                        </div> */}
+                                        </div>
                                         {user.isAdmin ? <Link to='/dashboard' style={{all: 'unset', cursor: 'pointer'}}><i class="fa-solid fa-gauge-high fa-lg"></i></Link> : <></>}
                                         <div className="notification-container">
                                             <i className="fa-solid fa-user-group fa-lg" style={{cursor: 'pointer'}} onClick={inviteRoute}></i>
